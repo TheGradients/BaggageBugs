@@ -15,9 +15,13 @@ datasource db {
 
 model User {
   id       String   @id @default(uuid())
-  name     String
-  email    String
-  phone    String
+  name     String   
+  email    String   @unique
+  phone    String   @unique
+  password String
+  firstName String?
+  lastName String?
+  dateOfBirth DateTime?
   bookings Booking[]
   luggage  Luggage[]
   reviews  Review[]
