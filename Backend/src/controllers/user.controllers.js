@@ -209,5 +209,21 @@ const changePassword = asyncHandler(async (req, res) => {
     }
 });
 
-export { register, login , logout , addDetails , changePassword};
+const getUser = asyncHandler(async (req, res) => {
+    const user = await prisma.user.findUnique({
+        where:{
+            id: req.user.id
+        }
+    })
+
+    if(!user){
+        throw new ApiError(404, "User not found");
+    }
+
+    res
+    .status(200)
+    .json(new ApiResponse(200, user, "User fetched successfully!!"));
+});
+
+export { register, login , logout , addDetails , changePassword , getUser };
 

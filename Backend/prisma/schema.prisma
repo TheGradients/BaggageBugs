@@ -25,6 +25,7 @@ model User {
   bookings Booking[]
   luggage  Luggage[]
   reviews  Review[]
+  facilities Facility[]
 }
 
 model Booking {
@@ -51,12 +52,17 @@ model Luggage {
 
 model Facility {
   id       String    @id @default(uuid())
+  userId   String
   name     String
+  email    String  
   address  String
-  phone    String
+  phone    String   
   services String
   capacity Int
-  timing   String
+  limited  Boolean?
+  type     String
+  timing   String?
+  user     User    @relation(fields: [userId], references: [id])
   bookings Booking[]
   reviews  Review[]
 }
