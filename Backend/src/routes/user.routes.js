@@ -1,5 +1,4 @@
 import {Router} from 'express';
-import {auth} from 'express-openid-connect';
 import { login, logout, register ,addDetails } from '../controllers/user.controllers.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
 
