@@ -8,17 +8,16 @@ import { COOKIE_OPTIONS } from "../constants.js";
 const prisma = new PrismaClient();
 
 const register = asyncHandler(async (req, res) => {
-    const {name, email , phoneNo, password} = req.body;
+    const {name, email , password} = req.body;
 
-    if(!name || !email || !phoneNo || !password){
+    if(!name || !email || !password){
         throw new ApiError(400, "Please fill all fields");
     }
     
     const existingUser = await prisma.user.findFirst({
         where: {
             OR:[
-                { email },
-                { phone: phoneNo }
+                { email }
             ]
         }
     });
@@ -35,7 +34,6 @@ const register = asyncHandler(async (req, res) => {
             data: {
                 name,
                 email,
-                phone:phoneNo,
                 password:hashedPassword
             }
         });
@@ -117,9 +115,9 @@ const logout = asyncHandler(async (req, res) => {
 });
 
 const addDetails = asyncHandler(async (req, res) => {
-    const { firstName , lastName , dateOfBirth } = req.body;
+    const { firstName , lastName , dateOfBirth , phoneNo } = req.body;
 
-    if(!firstName || !lastName || !dateOfBirth){
+    if(!firstName || !lastName || !dateOfBirth || !phoneNo){
         throw new ApiError(400, "Please fill all fields");
     }
 
@@ -143,7 +141,8 @@ const addDetails = asyncHandler(async (req, res) => {
             data: {
                 firstName,
                 lastName,
-                dateOfBirth:dob
+                dateOfBirth:dob,
+                phoneNo
             }
         });
 
@@ -158,5 +157,73 @@ const addDetails = asyncHandler(async (req, res) => {
     
 });
 
-export { register, login , logout , addDetails};
+const changePassword = asyncHandler(async (req, res) => {
+    const { currentPassword , newPassword , confirmPassword } = req.body;
+
+    if(currentPassword === newPassword){
+        throw new ApiError(400, "New password cannot be same as current password");
+    }
+
+    if(!currentPassword || !newPassword || !confirmPassword){
+        throw new ApiError(400, "Please fill all fields");
+    }
+
+    if(newPassword !== confirmPassword){
+        throw new ApiError(400, "Passwords do not match");
+    }
+
+    const user = await prisma.user.findUnique({
+        where: {
+            id: req.user.id
+        }
+    });
+
+    if(!user){
+        throw new ApiError(404, "User not found");
+    }
+
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+
+    if(!isMatch){
+        throw new ApiError(401, "Invalid credentials");
+    }
+
+    try {
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+        const updatedUser = await prisma.user.update({
+            where: {
+                id: req.user.id
+            },
+            data: {
+                password:hashedPassword
+            }
+        });
+
+        res
+        .status(200)
+        .json(new ApiResponse(200, updatedUser, "Password changed successfully"));
+
+    } catch (error) {
+        throw new ApiError(500, error || "Internal Server Error");
+    }
+});
+
+const getUser = asyncHandler(async (req, res) => {
+    const user = await prisma.user.findUnique({
+        where:{
+            id: req.user.id
+        }
+    })
+
+    if(!user){
+        throw new ApiError(404, "User not found");
+    }
+
+    res
+    .status(200)
+    .json(new ApiResponse(200, user, "User fetched successfully!!"));
+});
+
+export { register, login , logout , addDetails , changePassword , getUser };
 
