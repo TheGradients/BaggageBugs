@@ -3,4 +3,18 @@ const COOKIE_OPTIONS = {
     secure: true,
 };
 
-export { COOKIE_OPTIONS };
+const LUGGAGE_TYPES = [
+    "Hand Luggage",
+    "Cabin Luggage",
+    "Checked Luggage",
+    "Oversized Luggage",
+];
+
+const SERVICES = [
+   "WIFI",
+   "RESTROOM",
+   "CCTV" 
+]
+
+
+export { COOKIE_OPTIONS , LUGGAGE_TYPES , SERVICES};
