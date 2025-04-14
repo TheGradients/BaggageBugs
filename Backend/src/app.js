@@ -1,12 +1,20 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import passport from "passport";
+import session from "express-session";
 
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CLIENT_URL,
     credentials: true
+}));
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
 }));
 
 app.use(express.json({
@@ -20,16 +28,18 @@ app.use(express.urlencoded({
 
 app.use(cookieParser());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 import healthRouter from "./routes/healthcheck.routes.js";
 app.use("/api/v1", healthRouter);
 
 //user routes
 import userRouter from "./routes/user.routes.js";
-app.use("/api/v1", userRouter);
+app.use("/api/v1/user", userRouter);
 
-//facilty routes
-import facilityRouter from "./routes/facility.routes.js";
-app.use("/api/v1/facility", facilityRouter);
-
+// //facilty routes
+// import facilityRouter from "./routes/facility.routes.js";
+// app.use("/api/v1/facility", facilityRouter);
 
 export default app;

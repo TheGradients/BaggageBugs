@@ -1,6 +1,7 @@
 const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: true,
+    sameSite: 'none',
 };
 
 const LUGGAGE_TYPES = [
@@ -11,10 +12,15 @@ const LUGGAGE_TYPES = [
 ];
 
 const SERVICES = [
-   "WIFI",
-   "RESTROOM",
-   "CCTV" 
-]
+    "WIFI",
+    "RESTROOM",
+    "CCTV"
+];
 
+const ROLES = [
+    "admin",
+    "user",
+    "partner"
+];
 
-export { COOKIE_OPTIONS , LUGGAGE_TYPES , SERVICES};
+export { COOKIE_OPTIONS, LUGGAGE_TYPES, SERVICES, ROLES };
