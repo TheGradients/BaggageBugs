@@ -38,8 +38,8 @@ app.use("/api/v1", healthRouter);
 import userRouter from "./routes/user.routes.js";
 app.use("/api/v1/user", userRouter);
 
-// //facilty routes
-// import facilityRouter from "./routes/facility.routes.js";
-// app.use("/api/v1/facility", facilityRouter);
+//facilty routes
+import facilityRouter from "./routes/facility.routes.js";
+app.use("/api/v1/facility", facilityRouter);
 
 export default app;
