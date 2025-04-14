@@ -1,8 +1,7 @@
 import ApiError from "../utils/ApiError.js";
-import jwt from "jsonwebtoken";
 import asyncHandler from "../utils/asyncHandler.js";
-import  { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import { tokenValidation } from "../helper/jwt.helper.js";
+import User from "../models/user.model.js"
 
 const verifyToken = asyncHandler(async (req, _, next) => {
     try {
@@ -10,14 +9,10 @@ const verifyToken = asyncHandler(async (req, _, next) => {
         if (!token) {
             throw new ApiError(401, "Unauthorized Access.");
         }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        
-        const user = await prisma.user.findUnique({
-            where: {
-                id: decoded.id
-            }
-        });
-
+        const decoded = await tokenValidation(token);   
+        const user = await User.findById(
+            decoded.id,
+        );
         if (!user) {
             throw new ApiError(401, "Unauthorized Access.");
         }
