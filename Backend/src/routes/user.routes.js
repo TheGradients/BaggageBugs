@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import passport from 'passport';
 
 import {
     login,
@@ -12,7 +11,8 @@ import {
     googleCallback
 } from '../controllers/user.controller.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
-import googleAuth from '../middlewares/googleAuth.middleware.js';
+import googleAuth from "../middlewares/googleAuth.middleware.js"
+import passport from "../libs/passport.libs.js";
 
 const router = Router();
 
@@ -30,6 +30,6 @@ router.route('/logout').post(verifyJWT, logout);
 router.route('/addDetails').post(verifyJWT, addDetails);
 router.route('/changePassword').post(verifyJWT, changePassword);
 router.route('/getUser').get(verifyJWT, getUser);
-router.route('/toggleEmail').post(verifyJWT, toggleEmail);  
+router.route('/toggleEmail').post(verifyJWT, toggleEmail);
 
 export default router;
