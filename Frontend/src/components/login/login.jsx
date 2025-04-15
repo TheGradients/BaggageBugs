@@ -46,7 +46,7 @@ const Login = () => {
             </div>
 
             <div className="cont flex-col">
-              <h2 className="ml-11 font-extralight text-2xl text-[#28d3fa]">Login</h2>
+              <h2 className="ml-11 font-extralight text-2xl text-[#63C5DA]">Login</h2>
 
               <div className="flex flex-col ml-10">
                 <input
@@ -54,17 +54,17 @@ const Login = () => {
                   placeholder="E-mail"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full max-w-xs mt-6 p-3 border-2 border-[#5DCAD1] focus:outline-none focus:ring-2 focus:ring-[#F8934A] text-gray-600 placeholder-[#F8934A]/70"
+                  className="w-full max-w-xs mt-6 p-3 border-2 border-[#63C5DA] focus:outline-none focus:ring-2 focus:ring-[#F8934A] text-gray-600 placeholder-[#F8934A]/70"
                 />
                 <input
                   type="password"
                   placeholder="Password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full max-w-xs mt-6 p-3 border-2 border-[#5DCAD1] focus:outline-none focus:ring-2 focus:ring-[#F8934A] text-gray-600 placeholder-[#F8934A]/70"
+                  className="w-full max-w-xs mt-6 p-3 border-2 border-[#63C5DA] focus:outline-none focus:ring-2 focus:ring-[#F8934A] text-gray-600 placeholder-[#F8934A]/70"
                 />
               </div>
-              <h2 className="ml-9 underline font-extralight mt-4 text-[#5DCAD1] cursor-pointer">Forgot password?</h2>
+              <h2 className="ml-9 underline font-extralight mt-4 text-[#63C5DA] cursor-pointer">Forgot password?</h2>
 
               <button
                 type="submit"
