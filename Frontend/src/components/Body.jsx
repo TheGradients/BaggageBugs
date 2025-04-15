@@ -7,7 +7,7 @@ const Body = () => {
     const approuter = createBrowserRouter([
         {path: '/', element: <Login/>},
         {path: '/register',element:<Register/>},
-        {path: '/partneroverview',element:<Partneroverview/>}
+         {path: '/partneroverview',element:<Partneroverview/>}
     ]);
   return (
     <div>
