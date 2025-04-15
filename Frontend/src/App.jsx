@@ -1,5 +1,8 @@
+
+
 import React from "react";
 import { useState } from "react";
+import Body from "./components/Body";
 import Body from "./components/Body";
 import LandingPage from "./components/landingPage/LandingPage";
 import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
@@ -19,6 +22,7 @@ function App() {
       {/* <Profile/> */}
     </>
   );
+
 }
 
 export default App;

@@ -1,31 +1,20 @@
 import express from "express";
-import { auth } from "express-openid-connect";
-import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-
-import { fileURLToPath } from "url";
-import path from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config();
-
-const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: process.env.SECRET,
-    baseURL: process.env.BASEURL,
-    clientID: process.env.CLIENTID,
-    issuerBaseURL: process.env.ISSUERBASEURL,
-  };
+import passport from "passport";
+import session from "express-session";
 
 const app = express();
 
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: process.env.CLIENT_URL,
     credentials: true
+}));
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
 }));
 
 app.use(express.json({
@@ -39,16 +28,18 @@ app.use(express.urlencoded({
 
 app.use(cookieParser());
 
-
-app.use(auth(config));
+app.use(passport.initialize());
+app.use(passport.session());
 
 import healthRouter from "./routes/healthcheck.routes.js";
 app.use("/api/v1", healthRouter);
 
 //user routes
 import userRouter from "./routes/user.routes.js";
-app.use("/api/v1", userRouter);
+app.use("/api/v1/user", userRouter);
 
-
+//facilty routes
+import facilityRouter from "./routes/facility.routes.js";
+app.use("/api/v1/facility", facilityRouter);
 
 export default app;
