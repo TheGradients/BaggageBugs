@@ -13,6 +13,7 @@
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tailwindcss/vite": "^4.0.15",
     "@trpc/tanstack-react-query": "^11.0.0",
+    "axios": "^1.8.4",
     "framer-motion": "^12.5.0",
     "icons": "^1.0.0",
     "lucide-react": "^0.483.0",
