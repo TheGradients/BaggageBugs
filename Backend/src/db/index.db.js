@@ -1,14 +1,11 @@
-import getPrismaClient from "../libs/prisma.libs.js";
-
-const prima = getPrismaClient();
+import mongoose from "mongoose";
 
 const connectDB = async () => {
     try {
-        await prima.$connect();
-        console.log("Prisma Connected.");
+        const instance = await mongoose.connect(process.env.DATABASE_URL);
+        console.log(`MongoDB connected: ${instance.connection.host}`);
     } catch (error) {
-        console.log(`Error In Connecting To Prisma - ${error}`);
-        process.exit(1);
+        throw new Error(`MongoDB connection failed: ${error.message}`);
     }
 };
 
