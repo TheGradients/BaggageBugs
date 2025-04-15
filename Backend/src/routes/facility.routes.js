@@ -1,6 +1,10 @@
-import {Router} from 'express';
+import { Router } from 'express';
+
+import {
+    registerFacility,
+    getFacilities
+} from '../controllers/facility.controller.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
-import { registerFacility , getFacilities} from '../controllers/partner.controller.js';
 
 const router = Router();
 
