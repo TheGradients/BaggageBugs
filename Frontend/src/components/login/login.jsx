@@ -29,10 +29,13 @@ const Login = () => {
     setError(""); // Clear any previous errors
 
     try {
-      const response = await axios.post("https://baggagebugs-81tp.onrender.com/api/v1/user/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "https://baggagebugs-81tp.onrender.com/api/v1/user/login",
+        {
+          email,
+          password,
+        }
+      );
 
       console.log("Login successful:", response.data);
 
@@ -40,7 +43,9 @@ const Login = () => {
       navigate("/partneroverview"); // Adjust the route based on your app's routing structure
     } catch (err) {
       console.error("Login error:", err.response?.data?.message || err.message);
-      setError(err.response?.data?.message || "An error occurred during login.");
+      setError(
+        err.response?.data?.message || "An error occurred during login."
+      );
     }
   };
 
@@ -59,13 +64,17 @@ const Login = () => {
             <div className="up flex justify-between">
               <div className="cont flex gap-3 m-10">
                 <h1 className="text-[#FA8128] font-medium text-4xl">Hello,</h1>
-                <h1 className="text-[#28d3fa] font-medium text-4xl">bagpacker</h1>
+                <h1 className="text-[#28d3fa] font-medium text-4xl">
+                  bagpacker
+                </h1>
               </div>
               <div className="crossimg m-10"></div>
             </div>
 
             <div className="cont flex-col">
-              <h2 className="ml-11 font-extralight text-2xl text-[#63C5DA]">Login</h2>
+              <h2 className="ml-11 font-extralight text-2xl text-[#63C5DA]">
+                Login
+              </h2>
 
               <div className="flex flex-col ml-10">
                 <input
@@ -84,7 +93,9 @@ const Login = () => {
                 />
               </div>
               {error && <p className="text-red-500 ml-10 mt-2">{error}</p>}
-              <h2 className="ml-9 underline font-extralight mt-4 text-[#63C5DA] cursor-pointer">Forgot password?</h2>
+              <h2 className="ml-9 underline font-extralight mt-4 text-[#63C5DA] cursor-pointer">
+                Forgot password?
+              </h2>
 
               <button
                 type="submit"
@@ -95,12 +106,23 @@ const Login = () => {
 
               <div className="cont flex -ml-112 justify-center items-center mt-3 ">
                 <h2 className="font-extralight text-[#000000]">no account?</h2>
-                <h2 onClick={handleRegister} className="font-extralight underline text-[#FA8128] cursor-pointer">Register</h2>
+                <h2
+                  onClick={handleRegister}
+                  className="font-extralight underline text-[#FA8128] cursor-pointer"
+                >
+                  Register
+                </h2>
               </div>
 
               <div className="otherlinks ml-11 mt-10 space-y-3">
-                <SocialButton icon={<GoogleIcon />} text="Continue with Google" />
-                <SocialButton icon={<FacebookIcon />} text="Continue with Facebook" />
+                <SocialButton
+                  icon={<GoogleIcon />}
+                  text="Continue with Google"
+                />
+                <SocialButton
+                  icon={<FacebookIcon />}
+                  text="Continue with Facebook"
+                />
                 <SocialButton icon={<StoreIcon />} text="Store Baggage" />
               </div>
             </div>

@@ -51,10 +51,11 @@
   width: 1200px;
   height: 720px;
 }
-.tower{
-  background-image: url("/Tower.svg"); /* Directly from the public folder */
+/* .tower{
+  background-image: url("/Tower.svg"); 
   background-size: 100% 100%; 
     background-repeat: no-repeat;
   width: 366px;
   height: 246px;
-}
+} */
+ 
