@@ -2,6 +2,8 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Facility from "../models/facility.model.js";
+import User from "../models/user.model.js";
+import { COOKIE_OPTIONS } from "../constants.js";
 
 const registerFacility = asyncHandler(async (req, res) => {
     const {name, email , phone , address , type , capacity , limited , services , timing} = req.body;
@@ -34,8 +36,21 @@ const registerFacility = asyncHandler(async (req, res) => {
             timing,
             userId: user.id
         });
+
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $set: { role: ['partner'] } }
+          );
+
+          let tokenRole="";
+          for (const role in user.role) {
+              tokenRole = tokenRole + user.role[role] + " ";
+          }
+
         return res
             .status(201)
+            .clearCookie("role")
+            .cookie("role", tokenRole, COOKIE_OPTIONS)
             .json(new ApiResponse(201, facility, "Facility created successfully"));
     }
     catch (error) {
