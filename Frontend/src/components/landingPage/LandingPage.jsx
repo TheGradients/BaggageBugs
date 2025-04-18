@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "../../styles/LandingPage.css";
 import { TbArrowBack } from "react-icons/tb";
 import { FaLock } from "react-icons/fa";
@@ -15,7 +16,12 @@ import { HiArrowNarrowRight } from "react-icons/hi";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { useLocation } from "react-router-dom";
 const LandingPage = () => {
+  const location = useLocation();
+  const isLoggedIn = location.state?.isLoggedIn;
+  const navigate = useNavigate();
+  console.log("Is Logged In:", isLoggedIn);
   const imgArr = [
     {
       img: "/Tower.svg",
@@ -98,7 +104,19 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="burger p-2">
-              <GiHamburgerMenu size={35} color="#FA8128" />
+              
+            <GiHamburgerMenu
+                size={35}
+                color="#FA8128"
+                onClick={() => {
+                  if (isLoggedIn) {
+                    navigate("/partneroverview"); 
+                  } else {
+                    navigate("/"); 
+                  }
+                }} 
+                className="cursor-pointer"
+              />
             </div>
           </div>
         </div>
@@ -431,6 +449,14 @@ const LandingPage = () => {
               <span className="text-[#FA8128] font-bold">safe place</span>,
               allowing you to enjoy your journey to the fullest!
             </div>
+            <div className="mt-10">
+      <button
+        onClick={() => navigate("/become-partner")}
+        className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
+      >
+        Become a Partner
+      </button>
+    </div>
           </div>
         </div>
       </div>
