@@ -3,7 +3,7 @@ import mongoose, { Schema } from "mongoose";
 import { ROLES } from "../constants.js";
 
 const userSchema = new Schema({
-    name: { 
+    name: {
         type: String,
         required: true 
     },
@@ -13,8 +13,7 @@ const userSchema = new Schema({
         required: true 
     },
     phoneNo: { 
-        type: String, 
-        unique: true,
+        type: String,
     },
     password: { 
         type: String, 
