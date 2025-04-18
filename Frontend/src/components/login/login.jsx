@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import "../../styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios"; // Import axios
-
+import { useLocation } from "react-router-dom";
 // Placeholder social icons (Replace with actual components)
 const GoogleIcon = () => <span className="googleimg"></span>;
 const FacebookIcon = () => <span className="fbimg"></span>;
 const StoreIcon = () => <span className="bimg"></span>;
 
 const SocialButton = ({ icon, text }) => (
-  <button className="flex items-center gap-10 p-3 w-full bg-white max-w-xs border border-gray-300 rounded-lg text-[#FA8128] transition">
+  <button className="flex items-center gap-10 p-3 w-full border border-[#28d3fa]  bg-white max-w-xs  rounded-lg text-[#FA8128] transition">
     {icon} {text}
   </button>
 );
 
 const Login = () => {
+  let location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-
+  const [isLoogedIn, setIsLoggedIn] = useState(false);
   const handleRegister = () => {
     navigate("/register"); // Adjust the route based on your app's routing structure
   };
@@ -38,9 +39,10 @@ const Login = () => {
       );
 
       console.log("Login successful:", response.data);
-
+     if (response.data.success) {
+        setIsLoggedIn(true);}
       // Redirect to another page after successful login
-      navigate("/partneroverview"); // Adjust the route based on your app's routing structure
+      navigate("/landingpage", { state: { isLoggedIn: true } }); // Adjust the route based on your app's routing structure
     } catch (err) {
       console.error("Login error:", err.response?.data?.message || err.message);
       setError(
@@ -68,10 +70,10 @@ const Login = () => {
                   bagpacker
                 </h1>
               </div>
-              <div className="crossimg m-10"></div>
+              <div className="crossimg m-10"onClick={()=>navigate("/landingpage")}></div>
             </div>
 
-            <div className="cont flex-col">
+            <div className="cont  flex-col">
               <h2 className="ml-11 font-extralight text-2xl text-[#63C5DA]">
                 Login
               </h2>
