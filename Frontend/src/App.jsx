@@ -10,6 +10,7 @@ import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
 import Register from "./components/Register/register";
 import Partneroverview from "./components/Partner/Partneroverview";
 import Profile from "./components/Profile/Profile";
+import Onboardingpage from "./components/OnBoarding/Onboardingpage";
 function App() {
   return (
     <>
@@ -17,7 +18,8 @@ function App() {
       {/* <LandingPage/> */}
       {/* <Login /> */}
       {/* <Register/> */}
-      <Body/>    
+      {/* <Body/>*/}
+      <Onboardingpage/>
       {/* <Partneroverview/> */}
       {/* <Profile/> */}
     </>
