@@ -41,9 +41,22 @@ const facilitySchema = new Schema({
     timing: { 
         type: String 
     },
+    geolocation: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: true,
+        },
+        coordinates: {
+            type: [Number],
+            required: true,
+        },
+    },
 }, { 
-    timestamps: true 
+    timestamps: true,
 });
+
+facilitySchema.index({ geolocation: '2dsphere' });
 
 const Facility = mongoose.model('Facility', facilitySchema);
 export default Facility;
