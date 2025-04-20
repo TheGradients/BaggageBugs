@@ -46,4 +46,8 @@ app.use("/api/v1/facility", facilityRouter);
 import bookingRouter from "./routes/booking.routes.js";
 app.use("/api/v1/booking", bookingRouter);
 
+//map routes
+import mapRouter from "./routes/map.routes.js";
+app.use("/api/v1/map", mapRouter);
+
 export default app;
