@@ -24,7 +24,7 @@ const bookingSchema = new Schema({
         required: true 
     },
     paymentStatus: { 
-        type: String, 
+        type: Boolean, 
         required: true 
     },
     luggageType: { 

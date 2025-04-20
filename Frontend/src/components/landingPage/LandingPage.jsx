@@ -1,16 +1,88 @@
 import React from "react";
-import "./LandingPage.css";
+import { useNavigate } from "react-router-dom";
+import "../../styles/LandingPage.css";
 import { TbArrowBack } from "react-icons/tb";
 import { FaLock } from "react-icons/fa";
 import { GiWorld } from "react-icons/gi";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IoIosSearch } from "react-icons/io";
-import { BsArrowLeftCircle } from "react-icons/bs"; import { BsArrowRightCircle } from "react-icons/bs";
+import { BsArrowLeftCircle } from "react-icons/bs";
+import { BsArrowRightCircle } from "react-icons/bs";
 import { FaInstagram } from "react-icons/fa";
 import { RiFacebookCircleLine } from "react-icons/ri";
 import { BsTwitterX } from "react-icons/bs";
 import { TbBrandLinkedin } from "react-icons/tb";
+import { HiArrowNarrowRight } from "react-icons/hi";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import { useLocation } from "react-router-dom";
 const LandingPage = () => {
+  const location = useLocation();
+  const isLoggedIn = location.state?.isLoggedIn;
+  const navigate = useNavigate();
+  console.log("Is Logged In:", isLoggedIn);
+  const imgArr = [
+    {
+      img: "/Tower.svg",
+    },
+    {
+      img: "/Tower.svg",
+    },
+    {
+      img: "/Tower.svg",
+    },
+    {
+      img: "/Tower.svg",
+    },
+    {
+      img: "/Tower.svg",
+    },
+    {
+      img: "/Tower.svg",
+    },
+  ];
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    prevArrow: (
+      <div className="custom-arrow-left absolute top-1/2 -translate-y-1/2 left-[-40px] z-10">
+        <BsArrowLeftCircle className="text-4xl text-[#63C5DA] cursor-pointer hover:text-[#47a7bf] transition-all duration-300" />
+      </div>
+    ),
+    nextArrow: (
+      <div className="custom-arrow-right absolute top-1/2 -translate-y-1/2 right-[-40px] z-10">
+        <BsArrowRightCircle className="text-4xl text-[#63C5DA] cursor-pointer hover:text-[#47a7bf] transition-all duration-300" />
+      </div>
+    ),
+  };
+
+  const reviewsArr = [
+    { name: "Sophie Leone", review: "A Happy Customer", img: "/person.svg" },
+    { name: "John Doe", review: "Great Service!", img: "/person.svg" },
+    { name: "Jane Smith", review: "Highly Recommend!", img: "/person.svg" },
+    { name: "Mark Johnson", review: "Very Satisfied!", img: "/person.svg" },
+  ];
+  const settings2 = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    prevArrow: (
+      <div className="custom-arrow-left">
+        <BsArrowLeftCircle className="text-4xl text-[#63C5DA] cursor-pointer hover:text-[#47a7bf] transition-all duration-300" />
+      </div>
+    ),
+    nextArrow: (
+      <div className="custom-arrow-right">
+        <BsArrowRightCircle className="text-4xl text-[#63C5DA] cursor-pointer hover:text-[#47a7bf] transition-all duration-300" />
+      </div>
+    ),
+  };
   return (
     <>
       <div className="page p-2 pl-15 pr-15">
@@ -20,16 +92,31 @@ const LandingPage = () => {
             <div className="logo"></div>
           </div>
           <div className="nav-links flex gap-15">
-            <div className="flex items-center gap-2">
-              <select className="border-2  border-[#FA8128] rounded-lg p-1 px-5">
+            <div className="relative">
+              <select className="appearance-none border-2 border-[#FA8128] rounded-lg p-2 pr-10 bg-white">
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
                 <option value="de">German</option>
               </select>
+              <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                <img src="/Dropdown.svg" alt="" className="w-7 h-7" />
+              </div>
             </div>
             <div className="burger p-2">
-              <GiHamburgerMenu size={35} color="#FA8128" />
+              
+            <GiHamburgerMenu
+                size={35}
+                color="#FA8128"
+                onClick={() => {
+                  if (isLoggedIn) {
+                    navigate("/partneroverview"); 
+                  } else {
+                    navigate("/"); 
+                  }
+                }} 
+                className="cursor-pointer"
+              />
             </div>
           </div>
         </div>
@@ -85,41 +172,44 @@ const LandingPage = () => {
             </div>
           </div>
         </div>
-        <div className="section-2 flex justify-between mt-10">
-          <div
-            className="section-2-left h-[700px] w-[700px] ml-10 pt-44 pb-10 pl-30 flex-col justify-between text-left border-4 rounded-[50%] 
-           border-[#FA8128]"
-          >
+
+        {/* section2 */}
+
+        <div className="section-2 flex  items-center mt-10  gap-48 ml-30 ">
+          <div className="section-2-left h-[500px] w-[500px] ml-10 pt-30 pb-8 pl-16 flex-col justify-between text-left border-4 rounded-[50%] border-[#FA8128]">
             <div className="flex flex-col gap-1">
-              <div className="steps text-[30px] leading-tight">Step 1</div>
-              <div className="steps-content text-[#63C5DA] text-[50px] leading-none">
+              <div className="steps text-[20px] leading-tight">Step 1</div>
+              <div className="steps-content text-[#63C5DA] text-[35px] leading-none">
                 Book Luggage <span className="text-[#FA8128]">Storage</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-1 mt-9">
-              <div className="steps text-[30px]  leading-tight">Step 2</div>
-              <div className="steps-content text-[#63C5DA] text-[50px] leading-none">
+            <div className="flex flex-col gap-1 mt-6">
+              <div className="steps text-[20px] leading-tight">Step 2</div>
+              <div className="steps-content text-[#63C5DA] text-[35px] leading-none">
                 Drop Your <span className="text-[#FA8128]">Luggage</span>
               </div>
             </div>
 
-            <div className="flex flex-col gap-1 mt-9 ">
-              <div className="steps text-[30px]  leading-tight">Step 3</div>
-              <div className="steps-content text-[#63C5DA] text-[50px] leading-none">
+            <div className="flex flex-col gap-1 mt-6">
+              <div className="steps text-[20px] leading-tight">Step 3</div>
+              <div className="steps-content text-[#63C5DA] text-[35px] leading-none">
                 Enjoy Your <span className="text-[#FA8128]">Stay</span>
               </div>
             </div>
           </div>
-          <div className="luggage-man h-[700px] w-[20px] z-50 translate-x-[540px] translate-y-15 absolute"></div>
-          <div className="section-2-right h-[600px] w-[550px]   flex flex-col justify-center items-end pr-10 leading-tight">
-            <div className="text-[#63C5DA] text-[70px] font-bold">
+
+          <div className="luggage-man h-[500px] w-[20px] z-50 translate-x-[370px] translate-y-10 absolute"></div>
+
+          <div className="section-2-right h-[450px] w-[400px] flex flex-col justify-center items-end pr-5 leading-tight">
+            <div className="text-[#63C5DA] text-[50px] font-bold">
               How does it
             </div>
-            <div className="text-[#FA8128] text-[70px] font-bold">work?</div>
+            <div className="text-[#FA8128] text-[50px] font-bold">work?</div>
           </div>
         </div>
-        <div className="section-3 mt-25">
+
+        <div className="section-3 mt-40">
           <div className="text-[#63C5DA] text-[45px] font-bold text-center">
             We have your back for the{" "}
             <span className="text-[#FA8128] ml-7">Luggage</span>
@@ -137,35 +227,49 @@ const LandingPage = () => {
                 <div className="">Cheaper and Safe</div>
               </div>
             </div>
-            <div className="suitcase z-10 absolute translate-x-[770px] -translate-y-[580px]"></div>
+            <div className="suitcase z-10 absolute translate-x-[176%] -translate-y-[80%]"></div>
           </div>
         </div>
-        <div className="section-4 mt-45 ">
+        <div className="section-4 mt-45 flex flex-col items-center">
           <div className="text-[#63C5DA] text-[45px] font-bold text-center">
             <span className="text-[#FA8128]">Reviews </span>
             from our Backpackers
           </div>
-          <div className="reviews h-[400px]   p-5 flex items-center mt-5">
-            {/* Left Arrow */}
-            <div className="flex justify-center flex-[15%]">
-              <BsArrowLeftCircle className="text-5xl text-[#FA8128] cursor-pointer" />
-            </div>
 
-            {/* Middle Content */}
-            <div className="flex-[70%]  border-2 border-[#63C5DA] p-5 text-center">
-              <p className="text-2xl font-bold text-gray-700">
-                "This is a random review text. Absolutely amazing service!"
-              </p>
-              <p className="text-lg text-gray-500 h-70">- A Happy Customer</p>
-            </div>
+          <Slider {...settings2} className="w-[80%] mt-10  ">
+            {reviewsArr.map((review, index) => (
+              <div
+                key={index}
+                className="reviews h-[400px] w-[70%] p-5 flex justify-between items-center border-[#63C5DA] mt-5 mx-auto"
+              >
+                {/* Middle Content */}
+                <div className="flex flex-[70%] border-2 border-[#63C5DA] p-5 px-10 text-center items-center rounded-lg shadow-md box-border w-full">
+                  {/* Image Section */}
+                  <div className="reviews-left flex-[35%] flex justify-center items-center">
+                    <img
+                      src={review.img}
+                      alt="Person"
+                      className="h-[80%] w-auto object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
+                    />
+                  </div>
+                  {/* Text Section */}
+                  <div className="reviews-right flex-[65%] text-left pl-5">
+                    <p className="text-2xl font-bold text-gray-700">
+                      {review.name}
+                    </p>
+                    <p className="text-lg text-gray-500 mt-2">
+                      {review.review}
+                    </p>
+                  </div>
+                </div>
 
-            {/* Right Arrow */}
-            <div className="flex justify-center flex-[15%]">
-              <BsArrowRightCircle className="text-5xl text-[#FA8128] cursor-pointer" />
-            </div>
-          </div>
+                {/* Right Arrow */}
+              </div>
+            ))}
+          </Slider>
         </div>
-        <div className="section-5 mt-2">
+
+        <div className="section-5 mt-50">
           <div className="w-[75%] ml-[4%] mt-28 p-10 pr-20 border-2 border-[#63C5DA] border-l-0 ">
             <div className="text-[50px] font-bold  leading-tight">
               <div className="text-[#FA8128]">
@@ -203,45 +307,63 @@ const LandingPage = () => {
           </div>
           <div className="map-image"></div>
         </div>
-        <div className="section-7 mt-25 ml-[7%]">
+        <div className="section-7 mt-25 mx-auto max-w-[90%]">
           <div className="text-[#FA8128] text-[45px] font-bold text-center ">
             Frequently <span className="text-[#63C5DA]">Asked Questions</span>
           </div>
 
           <div className="grid grid-cols-2 gap-6 mt-8 text-center">
             <div className="p-4 border border-[#63C5DA] rounded-lg shadow-md bg-white">
-              <h3 className="text-lg  text-[#FA8128] font-semibold">
-                What is Baggage Bugs storage?
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg text-[#FA8128] font-semibold">
+                  What is Baggage Bugs storage?
+                </h3>
+                <HiArrowNarrowRight className="text-[#63C5DA] text-2xl ml-2" />
+              </div>
             </div>
+
             <div className="p-4 border border-[#63C5DA] rounded-lg shadow-md bg-white">
-              <h3 className="text-lg text-[#FA8128] font-semibold">
-                How to book luggage storage?
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg text-[#FA8128] font-semibold">
+                  How to book luggage storage?
+                </h3>
+                <HiArrowNarrowRight className="text-[#63C5DA] text-2xl ml-2" />
+              </div>
             </div>
+
             <div className="p-4 border border-[#63C5DA] rounded-lg shadow-md bg-white">
-              <h3 className="text-lg text-[#FA8128]  font-semibold">
-                How much does luggage cost?
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg text-[#FA8128] font-semibold">
+                  How much does luggage cost?
+                </h3>
+                <HiArrowNarrowRight className="text-[#63C5DA] text-2xl ml-2" />
+              </div>
             </div>
+
             <div className="p-4 border border-[#63C5DA] rounded-lg shadow-md bg-white">
-              <h3 className="text-lg text-[#FA8128] font-semibold">
-                Cost of 2 days of luggage?
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg text-[#FA8128] font-semibold">
+                  Cost of 2 days of luggage?
+                </h3>
+                <HiArrowNarrowRight className="text-[#63C5DA] text-2xl ml-2" />
+              </div>
             </div>
           </div>
         </div>
-        <div className="section-8 mt-40 ml-[7%] flex items-center justify-center gap-2">
-          <div className="flex justify-center flex-[10%]">
-            <BsArrowLeftCircle className="text-5xl text-[#63C5DA] cursor-pointer" />
-          </div>
-          <div className="tower p-4 w-[26.66%]   rounded-lg  "></div>
-          <div className="tower p-4 w-[26.66%]  rounded-lg  "></div>
-          <div className="tower p-4 w-[26.66%]   rounded-lg "></div>
-          <div className="flex justify-center flex-[10%]">
-            <BsArrowRightCircle className="text-5xl text-[#63C5DA] cursor-pointer" />
-          </div>
+        <div className="section-8 mt-40 items-center flex justify-center gap-4">
+          <Slider {...settings} className="w-[80%] px-10">
+            {imgArr.map((d, index) => (
+              <div key={index} className="tower p-4 rounded-lg">
+                <img
+                  src={d.img}
+                  alt={`Tower ${index}`}
+                  className="w-[300px] h-[200px] rounded-lg"
+                />
+              </div>
+            ))}
+          </Slider>
         </div>
+
         <div className="section-9 mt-40 w-full pl-[7%]  pr-[4%]  flex h-[500px]">
           <div className="section-9-left w-[50%]   flex flex-col gap-5">
             <div className="leading-tight">
@@ -250,7 +372,13 @@ const LandingPage = () => {
                 Baggage Bugs
               </div>
             </div>
-            <div className=" text-3xl"> ⭐⭐⭐⭐⭐</div>
+            <div className="flex items-center gap-2">
+              <img src="/Rating.svg" alt="Star" className="w-8 h-8" />
+              <img src="/Rating.svg" alt="Star" className="w-8 h-8" />
+              <img src="/Rating.svg" alt="Star" className="w-8 h-8" />
+              <img src="/Rating.svg" alt="Star" className="w-8 h-8" />
+              <img src="/Rating.svg" alt="Star" className="w-8 h-8" />
+            </div>
             <div className="leading-tight">
               <div className="text-[#63C5DA] text-[25px] ">
                 5 star ratings by <span className="text-[#FA8128] ">2345+</span>{" "}
@@ -258,12 +386,41 @@ const LandingPage = () => {
               </div>
               <div className="text-[#63C5DA] text-[25px] ">bag packers </div>
             </div>
-            <div className=" font-light text-[40px] flex gap-5 ">
-              <FaInstagram />
-              <RiFacebookCircleLine />
-              <BsTwitterX />
-              <TbBrandLinkedin />
+            <div className="font-light text-[40px] flex gap-5">
+              <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src="/Instagram.svg"
+                  alt="Instagram"
+                  className="w-10 h-10"
+                />
+              </a>
+              <a
+                href="https://www.facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/Facebook.svg" alt="Facebook" className="w-10 h-10" />
+              </a>
+              <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/LinkedIn.svg" alt="LinkedIn" className="w-10 h-10" />
+              </a>
+              <a
+                href="https://www.twitter.com"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/X.svg" alt="Twitter" className="w-10 h-10" />
+              </a>
             </div>
+
             <div className="">
               <div className="text-[#FA8128] text-[25px]  ">Contact Us</div>
               <div className="text-[#63C5DA] text-[25px]  ">
@@ -292,6 +449,14 @@ const LandingPage = () => {
               <span className="text-[#FA8128] font-bold">safe place</span>,
               allowing you to enjoy your journey to the fullest!
             </div>
+            <div className="mt-10">
+      <button
+        onClick={() => navigate("/become-partner")}
+        className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
+      >
+        Become a Partner
+      </button>
+    </div>
           </div>
         </div>
       </div>

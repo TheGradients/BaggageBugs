@@ -42,4 +42,8 @@ app.use("/api/v1/user", userRouter);
 import facilityRouter from "./routes/facility.routes.js";
 app.use("/api/v1/facility", facilityRouter);
 
+//booking routes
+import bookingRouter from "./routes/booking.routes.js";
+app.use("/api/v1/booking", bookingRouter);
+
 export default app;
