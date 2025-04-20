@@ -10,6 +10,7 @@ import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
 import Register from "./components/Register/register";
 import Partneroverview from "./components/Partner/Partneroverview";
 import Profile from "./components/Profile/Profile";
+import Bookingpage from "./components/Bookingpage/Bookingpage";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
       {/* <Login /> */}
       {/* <Register/> */}
       <Body/>    
+       {/* <Bookingpage/> */}
       {/* <Partneroverview/> */}
       {/* <Profile/> */}
     </>
