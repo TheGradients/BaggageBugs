@@ -52,7 +52,7 @@ const Register = () => {
       {/* Right Section */}
       <div className="right w-[60%]  flex items-center justify-center">
         <div className="map">
-          <form  >
+          <form>
             <div className="up flex justify-between">
               <div className="cont flex gap-3 m-10">
                 <h1 className="text-[#FA8128] font-medium text-4xl">Hello</h1>
@@ -101,13 +101,14 @@ const Register = () => {
 
               <button
                 type="submit"
-                className="h-[50px] ml-28 border-[#FFA480] border-[6px] text-white rounded-3xl w-[200px] flex justify-center items-center bg-[#FA8128] mt-8 hover:bg-[#f77a20] transition" onClick={handleRegister}
+                className="h-[50px] ml-28 border-[#FFA480] border-[6px] text-white rounded-3xl w-[200px] flex justify-center items-center bg-[#FA8128] mt-8 hover:bg-[#f77a20] transition"
+                onClick={handleRegister}
               >
                 Register
               </button>
 
-              <div className="cont flex -ml-112 justify-center items-center mt-3 ">
-                <h2 className="font-extralight text-[#000000]">
+              <div className="cont flex -ml-120 justify-center items-center mt-3 ">
+                <h2 className="font-extralight text-[#5DCAD1]">
                   Already existing account?{" "}
                 </h2>
                 <h2

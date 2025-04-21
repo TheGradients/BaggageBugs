@@ -4,6 +4,11 @@
   font-weight: 400;
   font-style: normal;
 }
+input:focus {
+  outline: none;
+  border-color: #63C5DA !important; /* Keeps the border color the same */
+  box-shadow: none; /* Removes any focus shadow (ring) */
+}
 @media (max-width: 768px) {
   .details-div > .row-1,
   .details-div > .row-2,
