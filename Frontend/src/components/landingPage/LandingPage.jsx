@@ -1,4 +1,5 @@
 import React from "react";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import "../../styles/LandingPage.css";
 import { TbArrowBack } from "react-icons/tb";
@@ -60,6 +61,7 @@ const LandingPage = () => {
     ),
   };
 
+ 
   const reviewsArr = [
     { name: "Sophie Leone", review: "A Happy Customer", img: "/person.svg" },
     { name: "John Doe", review: "Great Service!", img: "/person.svg" },
@@ -83,6 +85,48 @@ const LandingPage = () => {
       </div>
     ),
   };
+  const [map, setMap] = React.useState(null);
+  const [center, setCenter] = React.useState({ lat: 41.3851, lng: 2.1734 }); // default to Barcelona
+
+  const containerStyle = {
+    width: "600px",
+    height: "400px",
+  };
+
+  React.useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+          });
+        },
+        () => {
+          console.warn("Geolocation not allowed. Using default location.");
+        }
+      );
+    }
+  }, []);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "", // Replace with your key
+  });
+
+  const onLoad = React.useCallback(
+    function callback(map) {
+      const bounds = new window.google.maps.LatLngBounds(center);
+      map.fitBounds(bounds);
+      setMap(map);
+    },
+    [center]
+  );
+
+  const onUnmount = React.useCallback(function callback(map) {
+    setMap(null);
+  }, []);
+
   return (
     <>
       <div className="page p-2 pl-15 pr-15">
@@ -143,12 +187,13 @@ const LandingPage = () => {
                   placeholder="Barcelona"
                   type="text"
                 />
-                <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]">
+                <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]"  >
                   <IoIosSearch size={24} />
                 </span>
               </div>
 
-              <button className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md">
+              <button  onClick={() => { navigate('/bookingpage', { state: { isLoggedIn } }) }}
+ className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md">
                 Search
               </button>
             </div>
@@ -235,37 +280,37 @@ const LandingPage = () => {
             from our Backpackers
           </div>
 
-          <div className="relative w-[80%] mx-auto mt-10    rounded-lg">
-            <Slider {...settings2} className="w-full">
-              {reviewsArr.map((review, index) => (
-                <div
-                  key={index}
-                  className="reviews h-[400px] w-[70%] p-5 flex justify-between items-center mt-5 mx-auto"
-                >
-                  {/* Middle Content */}
-                  <div className="flex flex-[70%] border-2 border-[#63C5DA] p-5 px-10 text-center items-center rounded-lg shadow-md box-border w-full">
-                    {/* Image Section */}
-                    <div className="reviews-left flex-[35%] flex justify-center items-center">
-                      <img
-                        src={review.img}
-                        alt="Person"
-                        className="h-[80%] w-auto object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
-                      />
-                    </div>
-                    {/* Text Section */}
-                    <div className="reviews-right flex-[65%] text-left pl-5">
-                      <p className="text-2xl font-bold text-gray-700">
-                        {review.name}
-                      </p>
-                      <p className="text-lg text-gray-500 mt-2">
-                        {review.review}
-                      </p>
-                    </div>
+          <Slider {...settings2} className="w-[80%]  mt-10  ">
+            {reviewsArr.map((review, index) => (
+              <div
+                key={index}
+                className="reviews h-[500px] w-[70%] p-5 flex justify-between items-center border-[#63C5DA] mt-5 mx-auto"
+              >
+                {/* Middle Content */}
+                <div className="flex flex-[70%] border-2 border-[#63C5DA] p-5 px-10 text-center items-center rounded-lg shadow-md box-border w-full">
+                  {/* Image Section */}
+                  <div className="reviews-left flex-[35%] flex justify-center items-center">
+                    <img
+                      src={review.img}
+                      alt="Person"
+                      className="h-[80%] w-auto object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
+                    />
+                  </div>
+                  {/* Text Section */}
+                  <div className="reviews-right flex-[65%] text-left pl-5">
+                    <p className="text-2xl font-bold text-gray-700">
+                      {review.name}
+                    </p>
+                    <p className="text-lg text-gray-500 mt-2">
+                      {review.review}
+                    </p>
                   </div>
                 </div>
-              ))}
-            </Slider>
-          </div>
+
+                {/* Right Arrow */}
+              </div>
+            ))}
+          </Slider>
         </div>
 
         <div className="section-5 mt-50">
@@ -304,7 +349,20 @@ const LandingPage = () => {
             Safe and reliable luggage storage{" "}
             <span className="text-[#FA8128] font-medium">WORLDWIDE.</span>
           </div>
-          <div className="map-image"></div>
+          <div className="">
+            {isLoaded && (
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={center}
+                zoom={14}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+              >
+                {/* Optional: Add a Marker at user's location */}
+                <></>
+              </GoogleMap>
+            )}
+          </div>
         </div>
         <div className="section-7 mt-25 mx-auto max-w-[90%]">
           <div className="text-[#FA8128] text-[45px] font-bold text-center ">

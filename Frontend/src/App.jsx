@@ -13,8 +13,13 @@ import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
 import Register from "./components/Register/register";
 import Partneroverview from "./components/Partner/Partneroverview";
 import Profile from "./components/Profile/Profile";
+<<<<<<< HEAD
 import Reservation from "./components/reservation/Reservation";
 import Reviews from "./components/Reviews/Reviews";
+=======
+import Bookingpage from "./components/Bookingpage/Bookingpage";
+import Onboardingpage from "./components/OnBoarding/Onboardingpage";
+>>>>>>> faf9b91d4b3489340657b7a6ebaeaccbfa75a76a
 function App() {
   return (
     <>
@@ -22,7 +27,14 @@ function App() {
       {/* <LandingPage/> */}
       {/* <Login /> */}
       {/* <Register/> */}
+<<<<<<< HEAD
       {/* <Body/>     */}
+=======
+      <Body/>    
+       {/* <Bookingpage/> */}
+      {/* <Body/>*/}
+      <Onboardingpage/>
+>>>>>>> faf9b91d4b3489340657b7a6ebaeaccbfa75a76a
       {/* <Partneroverview/> */}
       {/* <Profile/> */}
       {/* <Reservation/> */}
