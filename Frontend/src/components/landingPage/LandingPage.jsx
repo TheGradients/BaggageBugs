@@ -104,17 +104,16 @@ const LandingPage = () => {
               </div>
             </div>
             <div className="burger p-2">
-              
-            <GiHamburgerMenu
+              <GiHamburgerMenu
                 size={35}
                 color="#FA8128"
                 onClick={() => {
                   if (isLoggedIn) {
-                    navigate("/partneroverview"); 
+                    navigate("/partneroverview");
                   } else {
-                    navigate("/"); 
+                    navigate("/");
                   }
-                }} 
+                }}
                 className="cursor-pointer"
               />
             </div>
@@ -236,37 +235,37 @@ const LandingPage = () => {
             from our Backpackers
           </div>
 
-          <Slider {...settings2} className="w-[80%] mt-10  ">
-            {reviewsArr.map((review, index) => (
-              <div
-                key={index}
-                className="reviews h-[400px] w-[70%] p-5 flex justify-between items-center border-[#63C5DA] mt-5 mx-auto"
-              >
-                {/* Middle Content */}
-                <div className="flex flex-[70%] border-2 border-[#63C5DA] p-5 px-10 text-center items-center rounded-lg shadow-md box-border w-full">
-                  {/* Image Section */}
-                  <div className="reviews-left flex-[35%] flex justify-center items-center">
-                    <img
-                      src={review.img}
-                      alt="Person"
-                      className="h-[80%] w-auto object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
-                    />
-                  </div>
-                  {/* Text Section */}
-                  <div className="reviews-right flex-[65%] text-left pl-5">
-                    <p className="text-2xl font-bold text-gray-700">
-                      {review.name}
-                    </p>
-                    <p className="text-lg text-gray-500 mt-2">
-                      {review.review}
-                    </p>
+          <div className="relative w-[80%] mx-auto mt-10    rounded-lg">
+            <Slider {...settings2} className="w-full">
+              {reviewsArr.map((review, index) => (
+                <div
+                  key={index}
+                  className="reviews h-[400px] w-[70%] p-5 flex justify-between items-center mt-5 mx-auto"
+                >
+                  {/* Middle Content */}
+                  <div className="flex flex-[70%] border-2 border-[#63C5DA] p-5 px-10 text-center items-center rounded-lg shadow-md box-border w-full">
+                    {/* Image Section */}
+                    <div className="reviews-left flex-[35%] flex justify-center items-center">
+                      <img
+                        src={review.img}
+                        alt="Person"
+                        className="h-[80%] w-auto object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
+                      />
+                    </div>
+                    {/* Text Section */}
+                    <div className="reviews-right flex-[65%] text-left pl-5">
+                      <p className="text-2xl font-bold text-gray-700">
+                        {review.name}
+                      </p>
+                      <p className="text-lg text-gray-500 mt-2">
+                        {review.review}
+                      </p>
+                    </div>
                   </div>
                 </div>
-
-                {/* Right Arrow */}
-              </div>
-            ))}
-          </Slider>
+              ))}
+            </Slider>
+          </div>
         </div>
 
         <div className="section-5 mt-50">
@@ -450,13 +449,13 @@ const LandingPage = () => {
               allowing you to enjoy your journey to the fullest!
             </div>
             <div className="mt-10">
-      <button
-        onClick={() => navigate("/become-partner")}
-        className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
-      >
-        Become a Partner
-      </button>
-    </div>
+              <button
+                onClick={() => navigate("/become-partner")}
+                className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
+              >
+                Become a Partner
+              </button>
+            </div>
           </div>
         </div>
       </div>
