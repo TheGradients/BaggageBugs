@@ -1,59 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "../../styles/Partner.css";
+import "../../styles/Login.css"
 
-// Dummy Icon Components (replace with actual icons or images)
-const GoogleIcon = () => <span className="p1"></span>;
-const FacebookIcon = () => <span className="p2"></span>;
-const StoreIcon = () => <span className="p3"></span>;
-const StarIcon = () => <span className="star"></span>;
-
-// Reusable Button with onClick
-const SocialButton = ({ icon, text, onClick }) => (
-  <button
-    onClick={onClick}
-    className="flex items-center border-2 border-[#28d3fa] gap-4 px-6 py-3 w-full bg-white text-[#FA8128] transition hover:shadow-md"
-  >
-    {icon}
-    <span className="font-medium">{text}</span>
-  </button>
-);
-
-const PartnerOverview = () => {
-  const navigate = useNavigate();
-
-  // Optional functions for actions
-  const handleProfileClick = () => {
+const Partneroverview = () => {
   
-    navigate("/profile");
-  };
-
-  const handleSettingsClick = () => {
-    console.log("Account Settings clicked");
-    navigate("/settings");
-  };
-
-  const handleBookingsClick = () => {
-    console.log("Bookings clicked");
-    navigate("/bookings");
-  };
-
-  const handleReviewsClick = () => {
-    console.log("Reviews clicked");
-    navigate("/reviews");
-  };
-
-  const handleAssistanceClick = () => {
-    console.log("Assistance clicked");
-    navigate("/assistance");
-  };
-
-  const handleLogoutClick = () => {
-    console.log("Logging out...");
-    // Optional: clear local storage/session, redirect to login
-    navigate("/login");
-  };
-
   return (
     <div className="main flex h-screen w-full">
       {/* Left Section */}
@@ -62,13 +11,20 @@ const PartnerOverview = () => {
         <div className="globeimg opacity-45 w-full h-full"></div>
       </div>
 
-      {/* Right Section */}
-      <div className="right w-[60%] h-full flex items-center justify-center">
-        <div className="map w-full px-10">
-          <div className="flex justify-between items-start">
-            <div className="cont flex gap-3 mt-10">
-              <h1 className="text-[#FA8128] font-semibold text-4xl">Hello,</h1>
-              <h1 className="text-[#28d3fa] font-semibold text-4xl">Partner</h1>
+        {/* Right Section */}
+        <div className="right w-[60%] flex items-center justify-center">
+          <div className="map">
+            <div className="up flex justify-between">
+              <div className="cont flex gap-3 m-10">
+                <h1 className="text-[#FA8128] font-medium text-4xl">Hello,</h1>
+                <h1 className="text-[#28d3fa] font-medium text-4xl">Partner</h1>
+              </div>
+              <div className="crossimg m-10"></div>
+              <div className="otherlinks ml-11 mt-10 space-y-3">
+                <SocialButton  icon={<GoogleIcon />} text="Continue with Google" />
+                <SocialButton icon={<FacebookIcon />} text="Continue with Facebook" />
+                <SocialButton icon={<StoreIcon />} text="Store Baggage" />
+              </div>
             </div>
             <div className="crossimg mt-10 cursor-pointer"onClick={()=>navigate("/landingpage")}></div>
           </div>
@@ -84,8 +40,8 @@ const PartnerOverview = () => {
           </div>
         </div>
       </div>
-    </div>
+    
   );
 };
 
-export default PartnerOverview;
+export default Partneroverview;
