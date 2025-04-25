@@ -61,7 +61,6 @@ const LandingPage = () => {
     ),
   };
 
- 
   const reviewsArr = [
     { name: "Sophie Leone", review: "A Happy Customer", img: "/person.svg" },
     { name: "John Doe", review: "Great Service!", img: "/person.svg" },
@@ -187,13 +186,17 @@ const LandingPage = () => {
                   placeholder="Barcelona"
                   type="text"
                 />
-                <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]"  >
+                <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]">
                   <IoIosSearch size={24} />
                 </span>
               </div>
 
-              <button  onClick={() => { navigate('/bookingpage', { state: { isLoggedIn } }) }}
- className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md">
+              <button
+                onClick={() => {
+                  navigate("/bookingpage", { state: { isLoggedIn } });
+                }}
+                className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md"
+              >
                 Search
               </button>
             </div>
