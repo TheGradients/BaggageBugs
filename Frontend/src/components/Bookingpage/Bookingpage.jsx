@@ -49,7 +49,7 @@ const Bookingpage = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo",
+    googleMapsApiKey: "",
   });
 
   const onLoad = useCallback(
