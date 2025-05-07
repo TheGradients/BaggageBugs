@@ -314,13 +314,20 @@ const DashboardDetails = () => {
                             </div>
                           </div>
                         </div>
+                        <div
+                          className="bank-acc p-3 border-[#63C5DA] text-[#FA8128] mt-10 ml-10 border-2 w-fit flex items-center gap-2 cursor-pointer"
+                          onClick={() => isDetailsAdded(true)}
+                        >
+                          Add New Facility
+                          <AiOutlinePlusCircle className="text-2xl" />
+                        </div>
                       </div>
                     ) : (
                       <div
                         className="bank-acc p-3 border-[#63C5DA] text-[#FA8128] mt-10 ml-10 border-2 w-fit flex items-center gap-2 cursor-pointer"
                         onClick={() => isDetailsAdded(true)}
                       >
-                        Add payment method
+                        Add New Facility
                         <AiOutlinePlusCircle className="text-2xl" />
                       </div>
                     )}

@@ -110,7 +110,7 @@ const LandingPage = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "", // Replace with your key
+    googleMapsApiKey: "AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo", // Replace with your key
   });
 
   const onLoad = React.useCallback(

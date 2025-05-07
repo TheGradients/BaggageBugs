@@ -12,8 +12,9 @@ const Body = () => {
     { path: "/register", element: <Register /> },
     { path: "/partneroverview", element: <Partneroverview /> },
     { path: "/landingpage", element: <LandingPage /> },
-    {path: "/profile", element: <DashboardDetails />},
-    {path : "/bookingpage", element: <Bookingpage />},
+  
+    { path: "/bookingpage", element: <Bookingpage /> },
+    {}
   ]);
   return (
     <div>

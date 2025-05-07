@@ -29,10 +29,10 @@ function App() {
       {/* <Login /> */}
       {/* <Register/> */}
  
-      {/* <Body/>     */}
+      <Body/>    
  
       {/* <Body/>     */}
-       <Bookingpage/>
+       {/* <Bookingpage/> */}
       {/* <Body/>*/}
       {/* <Onboardingpage/> */}
  
