@@ -49,7 +49,7 @@ const Bookingpage = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo",
+    googleMapsApiKey: "",
   });
 
   const onLoad = useCallback(
@@ -72,7 +72,7 @@ const Bookingpage = () => {
       const response = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
           destination
-        )}&key=AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo`
+        )}&key=`
       );
       const data = await response.json();
       if (data.results.length) {
