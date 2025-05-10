@@ -70,7 +70,10 @@ const Login = () => {
                   bagpacker
                 </h1>
               </div>
-              <div className="crossimg m-10"onClick={()=>navigate("/landingpage")}></div>
+              <div
+                className="crossimg m-10"
+                onClick={() => navigate("/landingpage")}
+              ></div>
             </div>
 
             <div className="cont  flex-col">
@@ -106,8 +109,8 @@ const Login = () => {
                 Login
               </button>
 
-              <div className="cont flex -ml-112 justify-center items-center mt-3 ">
-                <h2 className="font-extralight text-[#000000]">no account?</h2>
+              <div className="cont flex -ml-124 justify-center items-center mt-3 ">
+                <h2 className="font-extralight text-[#63C5DA]">no account?</h2>
                 <h2
                   onClick={handleRegister}
                   className="font-extralight underline text-[#FA8128] cursor-pointer"

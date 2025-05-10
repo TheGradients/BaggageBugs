@@ -2,6 +2,7 @@ import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import axios from "axios";
 const Profile = () => {
   const menuItems = [
     "My Profile",
@@ -13,6 +14,44 @@ const Profile = () => {
   const handleItemClick = (item) => {
     setSelectedItem(item);
   };
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+ 
+  const handleApi = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "https://baggagebugs-81tp.onrender.com/api/v1/user/addDetails",
+        { firstName, lastName, email, dateOfBirth, phoneNo },
+        
+      );
+      console.log("Data Added", response.data);
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
+  const [oldPassWord, setOldPassword] = useState("");
+  const [newPassWord, setNewPassword] = useState("");
+  const [confirmPassWord, setConfirmPassword] = useState("");
+  const handlePasswordApi = async (e) => {
+    try {
+      const response = await axios.post(
+        "https://baggagebugs-81tp.onrender.com/api/v1/user/changePassword",
+        {
+          currentPassword: oldPassWord,
+          newPassword: newPassWord,
+          confirmPassword: confirmPassWord,
+        }
+      );
+      console.log("Data Added", response.data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
   return (
     <>
       <div className="page-details p-2 sm:px-10">
@@ -74,10 +113,12 @@ const Profile = () => {
                     <input
                       className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                       placeholder="First Name"
+                      onChange={(e) => setFirstName(e.target.value)}
                     />
                     <input
                       className="content-input  border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                       placeholder="Last Name"
+                      onChange={(e) => setLastName(e.target.value)}
                     />
                   </div>
                   <div className="row-2 flex justify-between items-center">
@@ -85,20 +126,27 @@ const Profile = () => {
                       type="date"
                       className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                       placeholder="Date of Birth"
+                      onChange={(e) => setDateOfBirth(e.target.value)}
                     />
                     <input
                       className="content-input  border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                       placeholder="Email"
+                      onChange={(e) => setEmail(e.target.value)}
                     />
                   </div>
                   <div className="row-3 flex justify-between items-center">
                     <input
+                      type="number"
                       className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                       placeholder="Phone Number"
+                      onChange={(e) => setPhoneNo(e.target.value)}
                     />
                   </div>
 
-                  <button className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl w-26">
+                  <button
+                    className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl w-26"
+                    onClick={handleApi}
+                  >
                     Save
                   </button>
                 </div>
@@ -118,7 +166,14 @@ const Profile = () => {
                 <div className="text-[#63C5DA] text-[18px]">
                   Recieve my booking information
                 </div>
-                <div className="text-[#63C5DA] text-[18px]">Email</div>
+                <div className="flex items-center justify-between w-full">
+                  <div className="text-[#FA8128]">Email</div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" />
+                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2   rounded-full peer peer-checked:bg-[#FA8128] transition-all duration-300"></div>
+                    <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
+                  </label>
+                </div>
               </div>
             )}
             {selectedItem === "Payment Methods" && (
@@ -132,12 +187,13 @@ const Profile = () => {
             )}
             {selectedItem === "Passwords" && (
               <div className="password-div flex flex-col gap-10 px-5 md:px-10 pt-10 text-[20px] md:text-[24px] h-full text-[#FA8128] font-bold">
-                <div className="passwordAndSecurity">Password nad Security</div>
+                <div className="passwordAndSecurity">Password and Security</div>
                 <div className="row-1 flex justify-between items-center">
                   <input
                     type="password"
                     className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                     placeholder="Current Password"
+                    onChange={(e) => setOldPassword(e.target.value)}
                   />
                 </div>
                 <div className="row-2 flex justify-between items-center">
@@ -145,6 +201,7 @@ const Profile = () => {
                     type="password"
                     className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                     placeholder="New Password"
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
                 <div className="row-2 flex justify-between items-center">
@@ -152,6 +209,7 @@ const Profile = () => {
                     type="password"
                     className="content-input   border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
                     placeholder="Re-enter Password"
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                   />
                 </div>
                 <div className="text-[#63C5DA] text-[15px]">
@@ -159,7 +217,10 @@ const Profile = () => {
                   at least one letter and one number. Increase its security by
                   including special characters.
                 </div>
-                <button className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl w-60">
+                <button
+                  className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl w-60"
+                  onClick={handlePasswordApi}
+                >
                   Reset Password
                 </button>
               </div>
