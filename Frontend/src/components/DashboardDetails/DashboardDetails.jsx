@@ -10,8 +10,9 @@ const DashboardDetails = () => {
     "Bank Account",
     "Income",
   ];
-
+  const [detailsAdded, isDetailsAdded] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Details");
+
   const handleItemClick = (item) => {
     setSelectedItem(item);
   };
@@ -26,16 +27,7 @@ const DashboardDetails = () => {
   const handleCancel1 = () => {
     setIsFirstEditClicked(false);
   };
-  const [isFirstYesClicked, setIsFirstYesClicked] = useState(false);
-  const handleYes1 = () => {
-    setIsFirstYesClicked(!isFirstYesClicked);
-  };
-  const handleSave2 = () => {
-    setIsFirstYesClicked(false);
-  };
-  const handleCancel2 = () => {
-    setIsFirstYesClicked(false);
-  };
+
   const [isYes3Clicked, setIsYes3Clicked] = useState(false);
   const handleYes3 = () => {
     setIsYes3Clicked(!isYes3Clicked);
@@ -47,16 +39,50 @@ const DashboardDetails = () => {
     setIsYes3Clicked(false);
   };
 
+  // Storage
+
+  const [selected, setSelected] = useState(null);
+  const [storageEdit, setStorageEdit] = useState(false);
+  const [storageCapacity, setStorageCapacity] = useState("0");
+  const [prevDetails, setPrevDetails] = useState(true);
+
+  //  bank details
+
   const [isBankClicked, setIsBankClicked] = useState(false);
   const handleBankClick = () => {
     setIsBankClicked(!isBankClicked);
   };
   const handleBankSave = () => {
     setIsBankClicked(false);
-  }
+  };
   const handleBankCancel = () => {
     setIsBankClicked(false);
-  }
+  };
+  const [activeButtons, setActiveButtons] = useState([]);
+
+  const handleClick = (button) => {
+    setActiveButtons((prev) => {
+      if (prev.includes(button)) {
+        // If button is already selected, remove it
+        return prev.filter((item) => item !== button);
+      } else {
+        // Otherwise, add the button to the active buttons
+        return [...prev, button];
+      }
+    });
+  };
+
+  // Api call
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
+  const [services, setServices] = useState("");
+  const [capacity, setCapacity] = useState("100");
+  const [limited, setLimited] = useState("");
+  const [type, setType] = useState("");
+  const [timing, setTiming] = useState("9AM - 9PM");
+
   return (
     <>
       <div className="page-details p-2 sm:px-10">
@@ -68,14 +94,14 @@ const DashboardDetails = () => {
           </div>
           <div className="nav-links flex flex-col sm:flex-row gap-4 sm:gap-8">
             <div className="relative">
-              <select className="appearance-none border-2 border-[#FA8128] rounded-lg p-2 pr-10 bg-white">
+              <select className="appearance-none border-2 border-[#FA8128] rounded-lg p-2 pr-8 bg-white text-xl">
                 <option value="en">English</option>
                 <option value="es">Spanish</option>
                 <option value="fr">French</option>
                 <option value="de">German</option>
               </select>
               <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                <img src="/Dropdown.svg" alt="" className="w-7 h-7" />
+                <img src="/Dropdown.svg" alt="" className="w-5 h-5" />
               </div>
             </div>
             <div className="burger p-2">
@@ -87,14 +113,14 @@ const DashboardDetails = () => {
         {/* MAIN SECTION */}
         <div className="main-section flex flex-col lg:flex-row w-full mt-5 gap-4">
           {/* LEFT MENU */}
-          <div className="left-section w-full lg:w-[20%] px-8 pt-3 pb-5 flex flex-col gap-10 border-t-4 border-r-0 lg:border-r-4 border-b-4 border-[#63C5DA] shadow-[4px_4px_10px_#FA8128]">
+          <div className="left-section w-full lg:w-[20%] px-8 pt-3 pb-5 flex flex-col gap-8 border-t-4 border-r-0 lg:border-r-4 border-b-4 border-[#63C5DA] shadow-[4px_4px_10px_#FA8128]">
             <div className="file flex-col">
               <div className="heading-left text-[32px] md:text-[50px] text-[#63C5DA] underline font-bold">
                 My Ads
               </div>
               <div className="subheading-left text-[#63C5DA]">Hudson Lane</div>
             </div>
-            <div className="flex flex-col gap-10 text-[20px] md:text-[22px] text-center font-bold">
+            <div className="flex flex-col gap-5 text-[20px] md:text-[22px] text-center font-bold">
               {menuItems.map((item, index) => (
                 <div
                   key={index}
@@ -110,113 +136,197 @@ const DashboardDetails = () => {
                 </div>
               ))}
             </div>
+            <button className="bg-[#FA8128] text-white px-3 py-3  rounded-3xl">
+              Save
+            </button>
           </div>
 
           {/* RIGHT SECTION */}
           <div className="right-section w-full lg:w-[80%]">
             {/* DETAILS SECTION */}
             {selectedItem === "Details" && (
-              <div className="details-div flex flex-col justify-between px-5 md:px-10 pt-10 text-[20px] md:text-[24px] h-full text-[#FA8128] font-bold">
-                <div className="row-1 flex">
-                  <div className="row-1-detail flex-[30%]">Facility Name</div>
-                  <input
-                    className="content-input flex-[35%] border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
-                    placeholder="Lorem ipsum"
-                  />
-                  <div
-                    className="edit text-[#63C5DA] flex-[25%] text-right"
-                    onClick={() => handleFirstEditClick}
-                  >
-                    <div className="edit text-[#63C5DA] flex-[25%] text-right">
-                      {isFristEditClickled ? (
-                        <div className="space-x-2">
-                          <button
-                            className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl"
-                            onClick={handleSave1}
-                          >
-                            Save
-                          </button>
-                          <button
-                            className="bg-[#FA8128]  text-white px-3 py-1 rounded-3xl  "
-                            onClick={handleCancel1}
-                          >
-                            Cancel
-                          </button>
+              <>
+                {detailsAdded ? (
+                  <div className="details-div flex flex-col justify-between px-5 md:px-10 pt-10 text-[20px] md:text-[24px] h-full text-[#FA8128] font-bold">
+                    <div className="row-1 flex">
+                      <div className="row-1-detail flex-[30%]">
+                        Facility Name
+                      </div>
+                      <input
+                        className="content-input flex-[35%] border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px] "
+                        placeholder="Lorem ipsum"
+                        onChange={(e) => setName(e.target.value)}
+                      />
+                      <div
+                        className="edit text-[#63C5DA] flex-[25%] text-right"
+                        onClick={() => handleFirstEditClick}
+                      >
+                        <div className="edit text-[#63C5DA] flex-[25%] text-right">
+                          {isFristEditClickled ? (
+                            <div className="space-x-2">
+                              <button
+                                className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl"
+                                onClick={handleSave1}
+                              >
+                                Save
+                              </button>
+                              <button
+                                className="bg-[#FA8128]  text-white px-3 py-1 rounded-3xl  "
+                                onClick={handleCancel1}
+                              >
+                                Cancel
+                              </button>
+                            </div>
+                          ) : (
+                            <span
+                              className="cursor-pointer hover:underline items-center"
+                              onClick={handleFirstEditClick}
+                            >
+                              Edit
+                            </span>
+                          )}
                         </div>
-                      ) : (
-                        <span
-                          className="cursor-pointer hover:underline items-center"
-                          onClick={handleFirstEditClick}
+                      </div>
+                    </div>
+                    <div className="row-2 flex">
+                      <div className="row-2-detail flex-[30%]">
+                        Contact Information of the Partner
+                      </div>
+
+                      <div className="edit text-[#63C5DA] flex-[25%] text-right">
+                        Edit
+                      </div>
+                    </div>
+                    <div className="row-3 flex ">
+                      <div className="row-3-detail flex-[30%]">
+                        Email Address
+                      </div>
+                      <input
+                        className="content-input flex-[35%] border-2 items-start border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px] focus:border-[#63C5DA] focus:ring-0"
+                        placeholder="Shuddjdsi26@gmail.com"
+                        onChange={(e) => setEmail(e.target.value)}
+                      />
+                      <div className="flex-[25%]"></div>
+                    </div>
+                    <div className="row-4 flex ">
+                      <div className="row-4-detail flex-[30%]">Telephone</div>
+                      <input
+                        className="content-input flex-[35%] border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
+                        placeholder="+99 873629273839"
+                        onChange={(e) => setPhone(e.target.value)}
+                      />
+                      <div className="flex-[25%]"></div>
+                    </div>
+                    <div className="row-5 flex">
+                      <div className="row-5-detail flex-[30%]">
+                        Type of Luggage Storage
+                      </div>
+                      <select
+                        className="content-input border-2 flex-[35%] border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
+                        onSelect={(e) => setType(e.target.value)}
+                      >
+                        <option>Airport Luggage</option>
+                      </select>
+
+                      <div className="edit text-[#63C5DA] flex-[25%] text-right">
+                        Edit
+                      </div>
+                    </div>
+                    <div className="row-6 flex">
+                      <div className="row-6-detail flex-[30%]">Address</div>
+                      <input
+                        className="content-input flex-[35%] border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
+                        placeholder="wolfer dog streetrnckclc"
+                        onChange={(e) => setAddress(e.target.value)}
+                      />
+                      <div className="edit text-[#63C5DA] flex-[25%] text-right">
+                        Edit
+                      </div>
+                    </div>
+                    <div className="row-7 flex">
+                      <div className="content flex-[30%]">
+                        Bagpacker Services
+                      </div>
+                      <div className="flex  flex-[35%] gap-2">
+                        <button
+                          className={`wifi border-2 border-[#63C5DA] flex-1/3 rounded px-1 py-1 ${
+                            activeButtons.includes("wifi")
+                              ? "bg-orange-500 text-white"
+                              : ""
+                          }`}
+                          onClick={() => handleClick("wifi")}
                         >
-                          Edit
-                        </span>
-                      )}
+                          Wifi
+                        </button>
+                        <button
+                          className={`restroom border-2 border-[#63C5DA] flex-1/3 rounded px-1 py-1 ${
+                            activeButtons.includes("restroom")
+                              ? "bg-orange-500 text-white"
+                              : ""
+                          }`}
+                          onClick={() => handleClick("restroom")}
+                        >
+                          Restroom
+                        </button>
+                        <button
+                          className={`CCtv border-2 border-[#63C5DA] rounded flex-1/3 px-1 py-1 ${
+                            activeButtons.includes("CCtv")
+                              ? "bg-orange-500 text-white"
+                              : ""
+                          }`}
+                          onClick={() => handleClick("CCtv")}
+                        >
+                          CCtv
+                        </button>
+                      </div>
+                      <div className="content-edit text-[#63C5DA] flex-[25%] text-right">
+                        Edit
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="row-2 flex">
-                  <div className="row-2-detail flex-[30%]">
-                    Contact Information of the Partner
-                  </div>
+                ) : (
+                  <>
+                    {prevDetails ? (
+                      <div className="bottom-div w-full max-h-[65vh] px-4 md:px-10 overflow-auto">
+                        <div className="reviews-div border-2 border-[#63C5DA] p-5">
+                          <div className="reviews-top flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b border-gray-200 text-[#FA8128] gap-2">
+                            <div className="name font-semibold text-lg">
+                              Facility 001
+                            </div>
+                            <div className="booking-id text-sm md:text-base">
+                              Facility : 1234
+                            </div>
+                          </div>
+                          <div className="flex justify-between">
+                            <div>
+                              <div className="luggage-name text-[#FA8128] font-medium text-lg">
+                                Luggage 001
+                              </div>
+                              <div className="address text-[#FA8128] text-sm md:text-base">
+                                Queens Maritoon, Melbourne
+                              </div>
+                            </div>
 
-                  <div className="edit text-[#63C5DA] flex-[25%] text-right">
-                    Edit
-                  </div>
-                </div>
-                <div className="row-3 flex gap-52">
-                  <div className="row-3-detail ">Email Address</div>
-                  <input
-                    className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
-                    placeholder="Lorem ipsum"
-                  />
-                </div>
-                <div className="row-4 flex gap-62">
-                  <div className="row-4-detail ">Telephone</div>
-                  <input
-                    className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
-                    placeholder="Lorem ipsum"
-                  />
-                </div>
-                <div className="row-5 flex">
-                  <div className="row-5-detail flex-[30%]">
-                    Type of Luggage Storage
-                  </div>
-                  <select className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]">
-                    <option>Airport Luggage</option>
-                  </select>
-
-                  <div className="edit text-[#63C5DA] flex-[25%] text-right">
-                    Edit
-                  </div>
-                </div>
-                <div className="row-6 flex">
-                  <div className="row-6-detail flex-[30%]">Address</div>
-                  <input
-                    className="content-input flex-[35%] border-2 border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
-                    placeholder="Lorem ipsum"
-                  />
-                  <div className="edit text-[#63C5DA] flex-[25%] text-right">
-                    Edit
-                  </div>
-                </div>
-                <div className="row-7 flex">
-                  <div className="content flex-[30%]">Bagpacker Services</div>
-                  <div className="flex justify-between flex-[35%] gap-2 ">
-                    <button className="wifi border-2 border-[#63C5DA]  flex-1/3 rounded px-2 py-1">
-                      Wifi
-                    </button>
-                    <button className="restroom border-2 border-[#63C5DA]  flex-1/3 rounded px-2 py-1">
-                      Restroom
-                    </button>
-                    <button className="CCtv border-2 border-[#63C5DA] rounded flex-1/3 px-2 py-1">
-                      CCtv
-                    </button>
-                  </div>
-                  <div className="content-edit text-[#63C5DA] flex-[25%] text-right">
-                    Edit
-                  </div>
-                </div>
-              </div>
+                            <div className="reviews-bottom mt-4     items-start lg:items-center">
+                              <button className="bg-[#FA8128] text-white px-4 py-2 rounded-3xl self-start md:self-auto">
+                                Save
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div
+                        className="bank-acc p-3 border-[#63C5DA] text-[#FA8128] mt-10 ml-10 border-2 w-fit flex items-center gap-2 cursor-pointer"
+                        onClick={() => isDetailsAdded(true)}
+                      >
+                        Add payment method
+                        <AiOutlinePlusCircle className="text-2xl" />
+                      </div>
+                    )}
+                  </>
+                )}
+              </>
             )}
 
             {/* PARAMETERS SECTION */}
@@ -230,51 +340,79 @@ const DashboardDetails = () => {
                       kept daily.
                     </div>
                   </div>
-                  <div className="edit text-[#63C5DA]">Edit</div>
+                  <div className="flex items-center space-x-2">
+                    {storageEdit ? (
+                      <input
+                        type="number"
+                        value={storageCapacity}
+                        onChange={(e) =>
+                          setStorageCapacity(Number(e.target.value))
+                        }
+                        className="border-2 border-[#63C5DA] px-3 py-2 rounded text-[#FA8128]"
+                      />
+                    ) : (
+                      <button
+                        onClick={() => setStorageEdit(true)}
+                        className="border-2 border-[#63C5DA] bg-white text-[#FA8128] px-3 py-2"
+                      >
+                        Edit
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="param-right-item2 flex flex-col justify-between items-start">
                   <div className="param-right-item2  ">
                     <div className="Limited-storage">Limited Storage?</div>
-                    {isFirstYesClicked ? (
-                      <div className="options-div flex w-full  gap-96 items-center">
-                        {/* Left Side - Yes/No */}
-                        <div className="yes-no-options flex   gap-2">
-                          <button className="border-[#63C5DA] border-2 text-white bg-[#FA8128] px-3 py-2">
-                            Yes
-                          </button>
-                          <button
-                            className="border-[#63C5DA] border-2 text-white bg-[#FA8128] px-3 py-2"
-                            onClick={handleCancel2}
-                          >
-                            No
-                          </button>
-                        </div>
 
-                        {/* Right Side - Save/Cancel */}
-                        <div className="yes-no-options flex gap-2">
-                          <button
-                            className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl"
-                            onClick={handleSave2}
-                          >
-                            Save
-                          </button>
-                          <button
-                            className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl"
-                            onClick={handleCancel2}
-                          >
-                            Cancel
-                          </button>
-                        </div>
+                    <div className="options-div items-center flex w-full justify-between gap-[700px]">
+                      <div className="yes-no-options flex   gap-2">
+                        <button
+                          className={`border-[#63C5DA] border-2 px-3 py-2 ${
+                            selected === "yes"
+                              ? "bg-[#FA8128] text-white"
+                              : "bg-white text-[#FA8128]"
+                          }`}
+                          onClick={() => setSelected("yes")}
+                        >
+                          Yes
+                        </button>
+
+                        <button
+                          className={`border-[#63C5DA] border-2 px-3 py-2 ${
+                            selected === "no"
+                              ? "bg-[#FA8128] text-white"
+                              : "bg-white text-[#FA8128]"
+                          }`}
+                          onClick={() => {
+                            setSelected("no");
+                          }}
+                        >
+                          No
+                        </button>
                       </div>
-                    ) : (
-                      <button
-                        className="border-[#63C5DA] border-2 text-white bg-[#FA8128] px-3 py-2"
-                        onClick={handleYes1}
-                      >
-                        Yes
-                      </button>
-                    )}
+
+                      {/* Right Side - Save/Cancel */}
+
+                      {storageEdit && (
+                        <div className="save-cancel-options flex gap-2">
+                          <div className="space-x-2">
+                            <button
+                              className="bg-[#FA8128] text-white px-3 py-1  rounded-3xl"
+                              onClick={() => setStorageEdit(false)}
+                            >
+                              Save
+                            </button>
+                            <button
+                              className="bg-[#FA8128]  text-white px-3 py-1 rounded-3xl  "
+                              onClick={() => setStorageEdit(false)}
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -301,9 +439,14 @@ const DashboardDetails = () => {
             {selectedItem === "Availabilities" && (
               <div className="available-div px-5 md:px-10 pt-10 text-[20px] md:text-[24px] flex flex-col justify-between h-full text-[#FA8128] font-bold">
                 <div className="available-right-item1">
-                  <div className="opening-hours">Opening Hours</div>
-                  <div className="opening-hours-text text-[#63C5DA] text-[18px] md:text-[20px]">
-                    Open 24 hours a day and 7 days a week
+                  <div className="available-right-item1 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div className="opening-hours">
+                      <div className="opening-hours-text">Opening Hours</div>
+                      <div className="opening-hours-text text-[#63C5DA] text-[18px] md:text-[20px]">
+                        Open 24 hours a day and 7 days a week
+                      </div>
+                    </div>
+                    <div className="edit text-[#63C5DA]">Edit</div>
                   </div>
 
                   {isYes3Clicked ? (
