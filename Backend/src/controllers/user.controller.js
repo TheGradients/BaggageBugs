@@ -59,9 +59,9 @@ const login = asyncHandler(async (req, res) => {
         tokenRole = tokenRole + user.role[role] + " ";
     }
     try {
-        return res
-            .cookie("token", token, COOKIE_OPTIONS)
-            .cookie("role", tokenRole, COOKIE_OPTIONS)
+        res.cookie("token", token, COOKIE_OPTIONS);
+        res.cookie("role", tokenRole, COOKIE_OPTIONS);
+        return res    
             .status(200)
             .json(new ApiResponse(200, null, "User logged in successfully"));
     } catch (error) {
