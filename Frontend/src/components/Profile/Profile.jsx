@@ -19,14 +19,16 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [dateOfBirth, setDateOfBirth] = useState("");
   const [phoneNo, setPhoneNo] = useState("");
- 
+
   const handleApi = async (e) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "https://baggagebugs-81tp.onrender.com/api/v1/user/addDetails",
         { firstName, lastName, email, dateOfBirth, phoneNo },
-        
+        {
+          withCredentials: true, // ✅ REQUIRED to send cookies
+        }
       );
       console.log("Data Added", response.data);
     } catch (error) {
@@ -44,6 +46,9 @@ const Profile = () => {
           currentPassword: oldPassWord,
           newPassword: newPassWord,
           confirmPassword: confirmPassWord,
+        },
+        {
+          withCredentials: true, // ✅ REQUIRED to send cookies
         }
       );
       console.log("Data Added", response.data);
@@ -51,7 +56,23 @@ const Profile = () => {
       console.log("error", error);
     }
   };
-
+  const [toggleEmail, setToggleEmail] = useState(false);
+  const handleToggleEmail = () => {
+    setToggleEmail(!toggleEmail);
+  };
+  const handleEmailToggleAPI = async () => {
+    try {
+      const response = await axios.post(
+        "https://baggagebugs-81tp.onrender.com/api/v1/user/toggleEmail",
+        {
+          status: toggleEmail,
+        }
+      );
+      console.log("Toggle Email added", response.data);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <>
       <div className="page-details p-2 sm:px-10">
@@ -170,7 +191,10 @@ const Profile = () => {
                   <div className="text-[#FA8128]">Email</div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" className="sr-only peer" />
-                    <div className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2   rounded-full peer peer-checked:bg-[#FA8128] transition-all duration-300"></div>
+                    <div
+                      className="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-2   rounded-full peer peer-checked:bg-[#FA8128] transition-all duration-300"
+                      onClick={() => handleToggleEmail}
+                    ></div>
                     <div className="absolute left-0.5 top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-full"></div>
                   </label>
                 </div>
