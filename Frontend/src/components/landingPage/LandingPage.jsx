@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import "../../styles/LandingPage.css";
@@ -18,11 +18,20 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 const LandingPage = () => {
-  const location = useLocation();
-  const isLoggedIn = location.state?.isLoggedIn;
+  // const location = useLocation();
+  // const[isLoggedIn, setIsLoggedIn] = useState(false);
+  // const isLoggedIn1 = location.state?.isLoggedIn;
+  // React.useEffect(() => {
+  //   if (location.state?.isLoggedIn) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, [location.state]);
+  // const navigate = useNavigate();
+  // console.log("Is Logged In:", isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const navigate = useNavigate();
-  console.log("Is Logged In:", isLoggedIn);
   const imgArr = [
     {
       img: "/Tower.svg",
@@ -125,7 +134,7 @@ const LandingPage = () => {
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
-
+  const [isPartner, setIsPartner] = useState(false);
   return (
     <>
       <div className="page p-2 pl-15 pr-15">
@@ -152,9 +161,10 @@ const LandingPage = () => {
                 color="#FA8128"
                 onClick={() => {
                   if (isLoggedIn) {
+                    navigate("/useroverview");
+                  }
+                  if (isPartner && isLoggedIn) {
                     navigate("/partneroverview");
-                  } else {
-                    navigate("/");
                   }
                 }}
                 className="cursor-pointer"
@@ -511,7 +521,9 @@ const LandingPage = () => {
             </div>
             <div className="mt-10">
               <button
-                onClick={() => navigate("/become-partner")}
+                onClick={() => {
+                  setIsPartner(true);
+                }}
                 className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
               >
                 Become a Partner

@@ -20,6 +20,9 @@ import Reviews from "./components/Reviews/Reviews";
 import Bookingpage from "./components/Bookingpage/Bookingpage";
 import Onboardingpage from "./components/OnBoarding/Onboardingpage";
 import Storage from "./components/Bookingpage/Storage";
+import SuperAdmin from "./components/SuperAdmin/SuperAdmin";
+import SuperAdminUser from "./components/SuperAdmin/SuperAdminUser";
+import UserOverview from "./components/User/UserOverview";
  
 function App() {
   return (
@@ -28,19 +31,21 @@ function App() {
       {/* <LandingPage/>  */}
       {/* <Login /> */}
       {/* <Register/> */}
+  
  
       <Body/>    
- 
-      {/* <Body/>     */}
        {/* <Bookingpage/> */}
       {/* <Body/>*/}
       {/* <Onboardingpage/> */}
  
       {/* <Partneroverview/> */}
       {/* <Profile/> */}
+      {/* <SuperAdmin/> */}
+      {/* <SuperAdminUser/> */}
       {/* <Reservation/> */}
       {/* <Reviews/> */}
       {/* <Storage/> */}
+      {/* <UserOverview/> */}
     </>
   );
 

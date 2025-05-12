@@ -19,10 +19,14 @@ const Partneroverview = () => {
     </button>
   );
 
-  const handleProfileClick = () => {};
+  const handleProfileClick = () => {
+    navigate("/dashboard");
+  };
   const handleSettingsClick = () => {};
-  const handleBookingsClick = () => {};
-  const handleReviewsClick = () => {};
+  const handleBookingsClick = () => {
+    navigate("/reservation");
+  };
+  const handleReviewsClick = () => {navigate("/reviews")};
   const handleAssistanceClick = () => {};
   const handleLogoutClick = () => {};
 
@@ -51,7 +55,6 @@ const Partneroverview = () => {
           </div>
 
           {/* Social Buttons */}
-           
 
           {/* Button Grid */}
           <div className="grid grid-cols-2 gap-7 text-xl">

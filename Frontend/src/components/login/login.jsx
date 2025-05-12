@@ -1,10 +1,10 @@
 // Updated Login.js component with globe and map backgrounds
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../../styles/Login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-
+import { useSelector, useDispatch } from "react-redux";
 const GoogleIcon = () => <span className="googleimg"></span>;
 const FacebookIcon = () => <span className="fbimg"></span>;
 const StoreIcon = () => <span className="bimg"></span>;
@@ -23,18 +23,28 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const handleRegister = () => navigate("/register");
-
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("Redux isLoggedIn changed:", isLoggedIn);
+  }, [isLoggedIn]);
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
     try {
       const response = await axios.post(
         "https://baggagebugs-81tp.onrender.com/api/v1/user/login",
-        { email, password }
+        { email, password },
+        {
+          withCredentials: true, // ✅ REQUIRED to send cookies
+        }
       );
       if (response.data.success) {
-        navigate("/landingpage", { state: { isLoggedIn: true } });
+        // navigate("/landingpage", { state: { isLoggedIn: true } });
+        dispatch({ type: "login/login" });
+        navigate("/landingpage");
       }
+      console.log(response.data);
     } catch (err) {
       setError(
         err.response?.data?.message || "An error occurred during login."
@@ -48,7 +58,6 @@ const Login = () => {
       <div className="left-pane w-[30%] h-full relative bg-[#FA8128] flex items-center justify-center overflow-hidden">
         <div className="globeimg absolute top-10 left-0 w-[60%] h-[60%] opacity-50 z-0" />
         <div className="passport-img absolute z-10" />
-       
       </div>
 
       {/* RIGHT SIDE */}
@@ -68,8 +77,6 @@ const Login = () => {
               ×
             </button>
           </div>
-
-        
 
           <form onSubmit={handleLogin} className="space-y-4">
             <h2 className="text-2xl text-[#63C5DA] mb-2">Login</h2>
