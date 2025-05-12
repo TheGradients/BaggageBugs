@@ -22,8 +22,21 @@ const facilitySchema = new Schema({
         type: String, 
         required: true 
     },
-    services: { 
-        type: String, 
+    services: {
+        type: {
+            "wifi": {
+                type: Boolean,
+                default: false,
+            },
+            "cctv": {
+                type: Boolean,
+                default: false,
+            },
+            "restroom": {
+                type: Boolean,
+                default: false,
+            },
+        },
         required: true 
     },
     capacity: { 
