@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../../styles/DashboardDetails.css";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import axios from "axios";
 const DashboardDetails = () => {
   const menuItems = [
     "Details",
@@ -58,7 +59,7 @@ const DashboardDetails = () => {
   const handleBankCancel = () => {
     setIsBankClicked(false);
   };
-  const [activeButtons, setActiveButtons] = useState([]);
+  const [activeButtons, setActiveButtons] = useState("");
 
   const handleClick = (button) => {
     setActiveButtons((prev) => {
@@ -71,17 +72,59 @@ const DashboardDetails = () => {
       }
     });
   };
-
+  const services = activeButtons;
   // Api call
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
-  const [services, setServices] = useState("");
-  const [capacity, setCapacity] = useState("100");
-  const [limited, setLimited] = useState("");
-  const [type, setType] = useState("");
+  const [wifi, setWifi] = useState(false);
+  const [capacity, setCapacity] = useState("0");
+  const [limited, setLimited] = useState();
+  const [type, setType] = useState("airport storage");
   const [timing, setTiming] = useState("9AM - 9PM");
+  console.log(
+    name,
+     email,
+     address,
+    phone,
+     services,
+    capacity,
+    wifi,
+    typeof limited,
+    typeof type,
+    typeof timing,
+    typeof activeButtons
+  );
+
+  const handleDetailsAPI = async () => {
+    try {
+      const response = await axios.post(
+        "https://baggagebugs-81tp.onrender.com/api/v1/facility/register",
+        {
+          name,
+          email,
+          address,
+          phone,
+          services: {
+            wifi,
+          },
+          capacity,
+          limited,
+          type,
+          timing,
+        },
+        {
+          withCredentials: true,
+         
+        }   
+      );console.log("Registered Successfully:", response.data);
+
+      // Optional: Log form data if response status is 400
+    } catch (error) {
+      console.error("Error while registering facility:", error);
+    }
+  };
 
   return (
     <>
@@ -136,7 +179,10 @@ const DashboardDetails = () => {
                 </div>
               ))}
             </div>
-            <button className="bg-[#FA8128] text-white px-3 py-3  rounded-3xl">
+            <button
+              onClick={handleDetailsAPI}
+              className="bg-[#FA8128] text-white px-3 py-3  rounded-3xl"
+            >
               Save
             </button>
           </div>
@@ -223,9 +269,9 @@ const DashboardDetails = () => {
                       </div>
                       <select
                         className="content-input border-2 flex-[35%] border-[#63C5DA] rounded px-2 py-2 w-full max-w-[400px] text-[18px] md:text-[20px]"
-                        onSelect={(e) => setType(e.target.value)}
+                        onChange={(e) => setType(e.target.value)} // Correct event handler
                       >
-                        <option>Airport Luggage</option>
+                        <option value="airport-luggage">Airport Luggage</option>
                       </select>
 
                       <div className="edit text-[#63C5DA] flex-[25%] text-right">
@@ -254,7 +300,10 @@ const DashboardDetails = () => {
                               ? "bg-orange-500 text-white"
                               : ""
                           }`}
-                          onClick={() => handleClick("wifi")}
+                          onClick={() =>
+                            // setWifi(true)
+                            setWifi(true)
+                          }
                         >
                           Wifi
                         </button>
@@ -264,7 +313,9 @@ const DashboardDetails = () => {
                               ? "bg-orange-500 text-white"
                               : ""
                           }`}
-                          onClick={() => handleClick("restroom")}
+                          onClick={() =>
+                            setActiveButtons([...activeButtons, "button2"])
+                          }
                         >
                           Restroom
                         </button>
@@ -274,7 +325,9 @@ const DashboardDetails = () => {
                               ? "bg-orange-500 text-white"
                               : ""
                           }`}
-                          onClick={() => handleClick("CCtv")}
+                          onClick={() =>
+                            setActiveButtons([...activeButtons, "button3"])
+                          }
                         >
                           CCtv
                         </button>
@@ -314,13 +367,20 @@ const DashboardDetails = () => {
                             </div>
                           </div>
                         </div>
+                        <div
+                          className="bank-acc p-3 border-[#63C5DA] text-[#FA8128] mt-10 ml-10 border-2 w-fit flex items-center gap-2 cursor-pointer"
+                          onClick={() => isDetailsAdded(true)}
+                        >
+                          Add New Facility
+                          <AiOutlinePlusCircle className="text-2xl" />
+                        </div>
                       </div>
                     ) : (
                       <div
                         className="bank-acc p-3 border-[#63C5DA] text-[#FA8128] mt-10 ml-10 border-2 w-fit flex items-center gap-2 cursor-pointer"
                         onClick={() => isDetailsAdded(true)}
                       >
-                        Add payment method
+                        Add New Facility
                         <AiOutlinePlusCircle className="text-2xl" />
                       </div>
                     )}
@@ -344,10 +404,8 @@ const DashboardDetails = () => {
                     {storageEdit ? (
                       <input
                         type="number"
-                        value={storageCapacity}
-                        onChange={(e) =>
-                          setStorageCapacity(Number(e.target.value))
-                        }
+                        placeholder="0"
+                        onChange={(e) => setCapacity(e.target.value)}
                         className="border-2 border-[#63C5DA] px-3 py-2 rounded text-[#FA8128]"
                       />
                     ) : (
@@ -373,7 +431,7 @@ const DashboardDetails = () => {
                               ? "bg-[#FA8128] text-white"
                               : "bg-white text-[#FA8128]"
                           }`}
-                          onClick={() => setSelected("yes")}
+                          onClick={() => setLimited(true)}
                         >
                           Yes
                         </button>
@@ -385,7 +443,7 @@ const DashboardDetails = () => {
                               : "bg-white text-[#FA8128]"
                           }`}
                           onClick={() => {
-                            setSelected("no");
+                            setLimited(false);
                           }}
                         >
                           No
