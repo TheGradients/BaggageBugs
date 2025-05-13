@@ -11,6 +11,6 @@ const router = Router();
 
 router.route('/register').post(verifyJWT, registerFacility);
 router.route('/').get(verifyJWT, getFacilities);
-router.route('/facilityById').get(verifyJWT, getFacilityById);
+router.route('/facilityById').get(getFacilityById);
 
 export default router;
