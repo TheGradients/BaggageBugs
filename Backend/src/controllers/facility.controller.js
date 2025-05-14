@@ -80,7 +80,7 @@ const getFacilities = asyncHandler(async (req, res) => {
 });
 
 const getFacilityById = asyncHandler(async (req, res) => {
-    const { id } = req.body;
+    const { id } = req.query;
     if (!id) {
         throw new ApiError(400, "Facility ID is required");
     }
