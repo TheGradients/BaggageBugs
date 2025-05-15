@@ -11,12 +11,15 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const Bookingpage = () => {
-  const [sfdata,setsfdata] = useState([]);
-const [fcoord, setfcoord] = useState([]);
-const [distance1, setDistance1] = useState([]);
+  const [sfdata, setsfdata] = useState([]);
+  const [fcoord, setfcoord] = useState([]);
+  const [distance1, setDistance1] = useState([]);
+  const [fDuration, setfDuration] = useState("");
+  const [fAddress, setfAddress] = useState("");
+  const [fTiming, setfTiming] = useState("");
   const [center, setCenter] = useState({ lat: 41.3851, lng: 2.1734 });
   const [markerPositions, setMarkerPositions] = useState([]);
   const [destination, setDestination] = useState("");
@@ -53,12 +56,17 @@ const [distance1, setDistance1] = useState([]);
 
   const onUnmount = useCallback(() => setMap(null), []);
 
+  
+  
+  
   useEffect(() => {
     navigator.geolocation?.getCurrentPosition(({ coords }) => {
       const { latitude, longitude } = coords;
-      setCenter({ lat: latitude, lng: longitude });
+      setCenter({ lng: longitude, lat: latitude });
     });
   }, []);
+  console.log("user ",center.lat,center.lng);
+  
 
   const formatDate = (date) =>
     date instanceof Date ? date.toISOString().split("T")[0] : "";
@@ -85,62 +93,59 @@ const [distance1, setDistance1] = useState([]);
         );
 
         const fetchedFacilities = facilityRes.data.message;
-setFacilities(fetchedFacilities);
+        setFacilities(fetchedFacilities);
 
-// Collect coordinates for markers and fcoord state
-const coordsArray = [];
-const newMarkers = fetchedFacilities
-  .map((facility) => {
-    const coords = facility.geolocation?.coordinates;
-    if (coords && coords.length === 2) {
-      coordsArray.push(coords); // Collect for state
-      return { lat: coords[1], lng: coords[0] };
-    }
-    return null;
-  })
-  .filter(Boolean);
+        // Collect coordinates for markers and fcoord state
+        const coordsArray = [];
+        const newMarkers = fetchedFacilities
+          .map((facility) => {
+            const coords = facility.geolocation?.coordinates;
+            if (coords && coords.length === 2) {
+              coordsArray.push(coords); // Collect for state
+              return { lat: coords[1], lng: coords[0] };
+            }
+            return null;
+          })
+          .filter(Boolean);
 
+        setfcoord(coordsArray); // Set once with all coordinates
+        setMarkerPositions(newMarkers);
+        console.log("hello", fcoord);
+        for (let i = 0; i < coordsArray.length; i++) {
+          console.log("Coordinates:", coordsArray[i]);
+          try {
+            const distance1 = await axios.post(
+              "https://baggagebugs-81tp.onrender.com/api/v1/map/facilitiesDistanceTime",
+              {
+                userCoordinates: [ center.lng, center.lat ],
+                facilityCoordinates: coordsArray[i], // coordsArray[i] is already an array
+              },
+              { withCredentials: true } // optional third argument for cookies/auth
+            );
+            const distanceData = distance1.data;
+            setDistance1(distanceData);
+            setfDuration( distance1.data.message.duration)
+            console.log("time : ", distance1.data.message.duration);
+            console.log("Distance Data:", distanceData);
+            // console.log(distance1Data);?
+          } catch (error) {
+            console.error("Error setting coordinates:", error);
+          }
+        }
 
-setfcoord(coordsArray); // Set once with all coordinates
-setMarkerPositions(newMarkers);
-console.log("hello",fcoord);
-for (let i = 0; i < coordsArray.length; i++) {
-  console.log("Coordinates:", coordsArray[i]);
-  try {
-   const distance1 = await axios.post(
-  'https://baggagebugs-81tp.onrender.com/api/v1/map/facilitiesDistanceTime',
-  {
-    userCoordinates: [location.lng, location.lat],
-    facilityCoordinates: coordsArray[i], // coordsArray[i] is already an array
-  },
-  { withCredentials: true } // optional third argument for cookies/auth
-)
-const distanceData = distance1.data;
-setDistance1(distanceData);
-console.log("Distance Data:", distanceData);
-// console.log(distance1Data);?
-
-  } catch (error) {
-    console.error("Error setting coordinates:", error);
-    
-  }
-}
-
-console.log("Coords to be set in fcoord:", coordsArray);
-if (map && newMarkers.length > 0) {
-  map.panTo(newMarkers[0]);
-  map.setZoom(14);
-}
+        console.log("Coords to be set in fcoord:", coordsArray);
+        if (map && newMarkers.length > 0) {
+          map.panTo(newMarkers[0]);
+          map.setZoom(14);
+        }
       } else {
         alert("Location not found.");
       }
     } catch (err) {
       console.error("Search error:", err);
     }
-   
   };
-// console.log("Selected Facility ID12:",facilityId);
-      
+  // console.log("Selected Facility ID12:",facilityId);
 
   const sliderSettings = {
     dots: false,
@@ -160,59 +165,54 @@ if (map && newMarkers.length > 0) {
     ),
   };
 
-  
-       
   const handleBookNow = async (facilityId) => {
-
-  dispatch({ type: "facilityId/setFacilityId", payload: facilityId });
-  console.log("Selected Facility ID1:", facilityId);
-console.log(typeof facilityId);
- try {
-  const response1 = await axios.get(
-    `https://baggagebugs-81tp.onrender.com/api/v1/facility/facilityById?id=${facilityId}`,   
-  );
- setsfdata(response1.data);
- 
-  console.log("Facility Details:", response1.data.data.name);
-  const fdata= response1.data;
-  console.log("Facility Details1:", );
-} catch (error) {
-  console.log("Error fetching facility details:", error);
-}
-
- };
+    dispatch({ type: "facilityId/setFacilityId", payload: facilityId });
+    console.log("Selected Facility ID1:", facilityId);
+    console.log(typeof facilityId);
+    try {
+      const response1 = await axios.get(
+        `https://baggagebugs-81tp.onrender.com/api/v1/facility/facilityById?id=${facilityId}`
+      );
+      setsfdata(response1.data);
+      setfAddress(response1.data.data.address);
+      setfTiming(response1.data.data.timing);
+      console.log("Facility Details:", response1.data);
+      console.log("Facility Details Name:", response1.data.data.name);
+       
+     
+    } catch (error) {
+      console.log("Error fetching facility details:", error);
+    }
+  };
   // console.log("Facility ID through redux:", sfdata);
-// const handleBookNow = async (facilityId) => {
-//   try {
-//     console.log("Booking facility with ID:", facilityId);
+  // const handleBookNow = async (facilityId) => {
+  //   try {
+  //     console.log("Booking facility with ID:", facilityId);
 
-//     const response = await axios.get(
-//       "https://baggagebugs-81tp.onrender.com/api/v1/facility/facilityById",
-//       {
-//         params: {
-//           id: "682072396eadb9cf4dc06054",  // ✅ Passed correctly
-//         },
-//         withCredentials: true,
-//       }
-//     );
+  //     const response = await axios.get(
+  //       "https://baggagebugs-81tp.onrender.com/api/v1/facility/facilityById",
+  //       {
+  //         params: {
+  //           id: "682072396eadb9cf4dc06054",  // ✅ Passed correctly
+  //         },
+  //         withCredentials: true,
+  //       }
+  //     );
 
-//     console.log("Facility Details:", response.data);
-//   } catch (error) {
-//     console.error("Error fetching facility details:", error);
+  //     console.log("Facility Details:", response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching facility details:", error);
 
-//     if (error.config) {
-//       console.error("Request config:", error.config); // Shows what Axios tried to send
-//     }
+  //     if (error.config) {
+  //       console.error("Request config:", error.config); // Shows what Axios tried to send
+  //     }
 
-//     if (error.response) {
-//       console.error("Response status:", error.response.status);
-//       console.error("Response data:", error.response.data);
-//     }
-//   }
-// };
-
-
-
+  //     if (error.response) {
+  //       console.error("Response status:", error.response.status);
+  //       console.error("Response data:", error.response.data);
+  //     }
+  //   }
+  // };
 
   return (
     <div className="main h-screen w-full">
@@ -242,8 +242,21 @@ console.log(typeof facilityId);
         </div>
 
         {/* Date Pickers */}
-        {[["Drop-off", dropOffDate, showDropOffCalendar, setShowDropOffCalendar, setDropOffDate],
-          ["Pick-up", pickUpDate, showPickUpCalendar, setShowPickUpCalendar, setPickUpDate]
+        {[
+          [
+            "Drop-off",
+            dropOffDate,
+            showDropOffCalendar,
+            setShowDropOffCalendar,
+            setDropOffDate,
+          ],
+          [
+            "Pick-up",
+            pickUpDate,
+            showPickUpCalendar,
+            setShowPickUpCalendar,
+            setPickUpDate,
+          ],
         ].map(([label, date, showCal, toggleCal, updateDate]) => (
           <div className="relative" key={label}>
             <input
@@ -255,10 +268,13 @@ console.log(typeof facilityId);
             />
             {showCal && (
               <div className="absolute z-10">
-                <Calendar onChange={(d) => {
-                  updateDate(d);
-                  toggleCal(false);
-                }} value={date} />
+                <Calendar
+                  onChange={(d) => {
+                    updateDate(d);
+                    toggleCal(false);
+                  }}
+                  value={date}
+                />
               </div>
             )}
           </div>
@@ -266,7 +282,9 @@ console.log(typeof facilityId);
 
         {/* Bag Count */}
         <div className="box mt-2 flex h-[50px] w-[200px] items-center justify-center text-white">
-          <button onClick={() => setNumberofBag((n) => Math.max(n - 1, 0))}>-</button>
+          <button onClick={() => setNumberofBag((n) => Math.max(n - 1, 0))}>
+            -
+          </button>
           <span className="mx-3">{numberofbag}</span>
           <button onClick={() => setNumberofBag((n) => n + 1)}>+</button>
         </div>
@@ -316,14 +334,25 @@ console.log(typeof facilityId);
         >
           {/* Multiple Markers */}
           {markerPositions.map((pos, idx) => (
-            <Marker key={idx} position={pos} />
+            <Marker
+              key={idx}
+              position={pos}
+              onClick={() => {
+                setClicked(true);
+                // You can also add logic here to fetch or display facility details
+                handleBookNow(facilities[idx]._id); // if you want marker click to behave like "Book Now"
+              }}
+            />
           ))}
 
           {!clicked ? (
             <div className="w-full flex justify-center mt-2">
               <Slider {...sliderSettings} className="w-[85%] mt-96 max-w-7xl">
                 {facilities.map((item, index) => (
-                  <div key={index} className="p-4 flex justify-center items-center">
+                  <div
+                    key={index}
+                    className="p-4 flex justify-center items-center"
+                  >
                     <div className="flex flex-row border-2 border-[#63C5DA] rounded-xl shadow-lg p-4 w-full max-h-[350px] overflow-hidden bg-white">
                       <div className="w-[35%]">
                         <img
@@ -353,15 +382,15 @@ console.log(typeof facilityId);
                         </div>
                         <div className="text-sm">
                           <div className="text-green-700">{item.timing}</div>
-                     <div className="text-[#63C5DA]"></div>
+                          <div className="text-[#63C5DA]"></div>
                         </div>
                         <button
                           className="bg-[#FA8128] text-white px-3 py-2 rounded-3xl"
                           onClick={async () => {
-                         await handleBookNow(item._id);
-        setClicked(true);
-}} // Pass facility ID here
-                         // Pass facility ID here
+                            await handleBookNow(item._id);
+                            setClicked(true);
+                          }} // Pass facility ID here
+                          // Pass facility ID here
                         >
                           Book Now
                         </button>
@@ -372,71 +401,78 @@ console.log(typeof facilityId);
               </Slider>
             </div>
           ) : (
-          <div className="absolute flex mt-20 justify-center items-center ml-42 h-[80%] bg-gray-50 bg-opacity-80 backdrop-blur-sm">
-        <div className="border-2 border-[#63C5DA] p-4 overflow-hidden shadow-lg bg-white transition-all hover:shadow-xl flex flex-col gap-y-4 divide-y divide-gray-300 max-w-md w-full">
-          {/* Image */}
-          <div className="w-full h-48 bg-gray-100 rounded overflow-hidden">
-            <img
-              src="/BookingPhoto.svg"
-              alt="Storage"
-              className="w-full h-full object-cover"
-            />
-          </div>
+            <div className="absolute flex mt-20 justify-center items-center ml-42 h-[80%] bg-gray-50 bg-opacity-80 backdrop-blur-sm">
+              <div className="border-2 border-[#63C5DA] p-4 overflow-hidden shadow-lg bg-white transition-all hover:shadow-xl flex flex-col gap-y-4 divide-y divide-gray-300 max-w-md w-full">
+                {/* Image */}
+                <div className="w-full h-48 bg-gray-100 rounded overflow-hidden">
+                  <img
+                    src="/BookingPhoto.svg"
+                    alt="Storage"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-          {/* Details */}
-          <div className="pt-2">
-            <div className="text-[#FA8128] text-xl font-semibold">
-           
-            </div>
-            <div className="text-[#FA8128] text-sm font-light">
-              Queen Street, Melbourne
-            </div>
-            <div className="flex items-center mt-1">
-              {[...Array(5)].map((_, i) => (
-                <img key={i} src="/Rating.svg" alt="Star" className="w-5 h-5" />
-              ))}
-            </div>
-          </div>
+                {/* Details */}
+                <div className="pt-2">
+                  <div className="text-[#FA8128] text-xl font-semibold"></div>
+                  <div className="text-[#FA8128] text-sm font-light">
+                    {fAddress || "Queens street, Melbourn"}
+                  </div>
+                  <div className="flex items-center mt-1">
+                    {[...Array(5)].map((_, i) => (
+                      <img
+                        key={i}
+                        src="/Rating.svg"
+                        alt="Star"
+                        className="w-5 h-5"
+                      />
+                    ))}
+                  </div>
+                </div>
 
-          {/* Availability */}
-          <div className="pt-2 text-sm">
-            <div className="text-green-700">Open - Closes 11:00PM</div>
-            <div className="text-[#63C5DA]">3 min away from your location</div>
-          </div>
+                {/* Availability */}
+                <div className="pt-2 text-sm">
+                  <div className="text-green-700">{fTiming}</div>
+                  <div className="text-[#63C5DA]">
+                    {fDuration} away from your location
+                  </div>
+                </div>
 
-          {/* Facilities */}
-          <div className="pt-2 flex gap-2 flex-wrap">
-            {["Wifi", "Restroom", "CCtv"].map((facility) => (
-              <button
-                key={facility}
-                className="border-2 border-[#63C5DA] rounded px-3 py-1 text-[#FA8128] text-sm"
-              >
-                {facility}
-              </button>
-            ))}
-          </div>
+                {/* Facilities */}
+                <div className="pt-2 flex gap-2 flex-wrap">
+                  {["Wifi", "Restroom", "CCtv"].map((facility) => (
+                    <button
+                      key={facility}
+                      className="border-2 border-[#63C5DA] rounded px-3 py-1 text-[#FA8128] text-sm"
+                    >
+                      {facility}
+                    </button>
+                  ))}
+                </div>
 
-          {/* Pricing */}
-          <div className="pt-2 text-center">
-            <p className="text-[#FA8128] text-lg font-medium">
-              At 2.5 EUR per bag/day
-            </p>
-            <div className="flex gap-2 justify-center my-2 flex-wrap">
-              {["6:30 PM", "8:30 PM", "9:30 PM", "10:00 PM"].map((time) => (
-                <button
-                  key={time}
-                  className="border-2 border-[#63C5DA] rounded px-3 py-1 text-[#FA8128] text-sm"
-                >
-                  {time}
-                </button>
-              ))}
+                {/* Pricing */}
+                <div className="pt-2 text-center">
+                  <p className="text-[#FA8128] text-lg font-medium">
+                    At 2.5 EUR per bag/day
+                  </p>
+                  <div className="flex gap-2 justify-center my-2 flex-wrap">
+                    {["6:30 PM", "8:30 PM", "9:30 PM", "10:00 PM"].map(
+                      (time) => (
+                        <button
+                          key={time}
+                          className="border-2 border-[#63C5DA] rounded px-3 py-1 text-[#FA8128] text-sm"
+                        >
+                          {time}
+                        </button>
+                      )
+                    )}
+                  </div>
+                  <button className="bg-[#FA8128] text-white px-5 py-2 rounded-3xl mt-2">
+                    Book Now
+                  </button>
+                </div>
+              </div>
             </div>
-            <button className="bg-[#FA8128] text-white px-5 py-2 rounded-3xl mt-2">
-              Book Now
-            </button>
-          </div>
-        </div>
-      </div>
           )}
         </GoogleMap>
       )}
