@@ -9,8 +9,7 @@ import Body from "./components/Body";
 import LandingPage from "./components/landingPage/LandingPage";
 import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
 // import Login from "./components/login/Login";
-// import Login from "./components/login/Login";
-import Register from "./components/Register/register";
+// import Login from "./components/login/Logi
 import Partneroverview from "./components/Partner/Partneroverview";
 import Profile from "./components/Profile/Profile";
  
