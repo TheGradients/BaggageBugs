@@ -2,8 +2,13 @@ import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const Profile = () => {
+  const navigate = useNavigate();
+  const handleLogoClick = () => {
+    navigate("/landingpage");
+  };
   const menuItems = [
     "My Profile",
     "Notifications",
@@ -73,12 +78,19 @@ const Profile = () => {
       console.log("error", error);
     }
   };
+  const [isBankClicked, setIsBankClicked] = useState(false);
+  const handleBankClick = () => {
+    setIsBankClicked(!isBankClicked);
+  };
   return (
     <>
       <div className="page-details p-2 sm:px-10">
         {/* NAVBAR */}
         <div className="navbar flex flex-col sm:flex-row items-start sm:items-center p-2 m-4 justify-between text-2xl gap-4">
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2 cursor-pointer"
+            onClick={handleLogoClick}
+          >
             <div className="logo-bag"></div>
             <div className="logo"></div>
           </div>
@@ -201,12 +213,100 @@ const Profile = () => {
               </div>
             )}
             {selectedItem === "Payment Methods" && (
-              <div className="payment-div flex flex-col gap-10 px-5 md:px-10 pt-10 text-[20px] md:text-[24px] h-full text-[#FA8128] font-bold">
-                <div className="payment"> Payment Methods</div>{" "}
-                <div className="bank-acc p-3 border-[#63C5DA] border-2 w-fit flex items-center gap-2 cursor-pointer">
-                  Add Credit Card
-                  <AiOutlinePlusCircle className="text-2xl" />
-                </div>
+              <div className="bank-div px-5 md:px-10 pt-10 text-[20px] md:text-[24px] flex flex-col gap-8 h-full text-[#FA8128] font-bold">
+                {!isBankClicked ? (
+                  <>
+                    <div className="bank-acc">Bank Account</div>
+                    <div
+                      className="bank-acc p-3 border-[#63C5DA] border-2 w-fit flex items-center gap-2 cursor-pointer"
+                      onClick={handleBankClick}
+                    >
+                      Add payment method
+                      <AiOutlinePlusCircle className="text-2xl" />
+                    </div>
+                  </>
+                ) : (
+                  <div>
+                    <div className="bank-yes-div flex flex-col gap-4 text-[#FA8128] font-bold">
+                      <div className="bank-row-1 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-1-detail md:w-1/2">
+                          Account Holder Name
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-2 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-2-detail md:w-1/2">Email</div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-3 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-3-detail md:w-1/2">BSB</div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-4 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-4-detail md:w-1/2">
+                          Account Number
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-5 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-5-detail md:w-1/2">
+                          Account Holder's Address
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-6 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-6-detail md:w-1/2">
+                          Account Holder's Post Code
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-7 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-7-detail md:w-1/2">
+                          Account Holder's Town/City
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-8 flex flex-col md:flex-row gap-2">
+                        <div className="bank-row-8-detail md:w-1/2">
+                          State Code
+                        </div>
+                        <input
+                          className="content-input border-2 border-[#63C5DA] rounded px-2 py-2 w-full text-[18px] md:text-[20px]"
+                          placeholder="Lorem ipsum"
+                        />
+                      </div>
+                      <div className="bank-row-9 flex flex-col sm:flex-row gap-4 mt-4">
+                        <button className="bg-[#FA8128] text-white px-4 py-2 rounded-3xl w-full sm:w-auto">
+                          Save
+                        </button>
+                        <button className="bg-[#FA8128] text-white px-4 py-2 rounded-3xl w-full sm:w-auto">
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
             {selectedItem === "Passwords" && (
