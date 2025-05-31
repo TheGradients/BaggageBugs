@@ -1,29 +1,43 @@
-import React from 'react'
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Login.css";
+import axios from "axios";
 const UserOverview = () => {
-     const navigate = useNavigate();
+  const navigate = useNavigate();
 
-     const GoogleIcon = () => <span className="googleimg"></span>;
-     const FacebookIcon = () => <span className="fbimg"></span>;
-     const StoreIcon = () => <span className="bimg"></span>;
-     const StarIcon = () => <span className="starimg"></span>;
+  const GoogleIcon = () => <span className="googleimg"></span>;
+  const FacebookIcon = () => <span className="fbimg"></span>;
+  const StoreIcon = () => <span className="bimg"></span>;
+  const StarIcon = () => <span className="starimg"></span>;
+  const LogoutIcon = () => <span className="logoutimg"></span>;
 
-     const SocialButton = ({ icon, text, onClick }) => (
-       <button
-         className="flex items-center gap-4 p-3 w-full border border-[#28d3fa] bg-white max-w-xs rounded-lg text-[#FA8128] transition hover:shadow-md"
-         onClick={onClick}
-       >
-         {icon} {text}
-       </button>
-     );
+  const SocialButton = ({ icon, text, onClick }) => (
+    <button
+      className="flex items-center gap-4 p-3 w-full border border-[#28d3fa] bg-white max-w-xs rounded-lg text-[#FA8128] transition hover:shadow-md"
+      onClick={onClick}
+    >
+      {icon} {text}
+    </button>
+  );
 
-     const handleProfileClick = () => {navigate("/profile")};
-     const handleSettingsClick = () => {};
-     const handleBookingsClick = () => {};
-    
-     const handleAssistanceClick = () => {};
-     const handleLogoutClick = () => {};
+  const handleProfileClick = () => {
+    navigate("/profile");
+  };
+  const handleSettingsClick = () => {};
+  const handleBookingsClick = () => {
+    navigate("/userbookings");
+  };
+
+  const handleAssistanceClick = () => {};
+  const handleLogoutClick = async () => {
+    try {
+      const response = await axios.post("api/user/logout");
+      console.log("logged out");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <>
       <div className="flex h-screen w-full overflow-hidden">
@@ -68,14 +82,14 @@ const UserOverview = () => {
                 text="My Bookings"
                 onClick={handleBookingsClick}
               />
-               
+
               <SocialButton
                 icon={<StarIcon />}
                 text="Assistance"
                 onClick={handleAssistanceClick}
               />
               <SocialButton
-                icon={<StarIcon />}
+                icon={<LogoutIcon />}
                 text="Logout"
                 onClick={handleLogoutClick}
               />
@@ -85,6 +99,6 @@ const UserOverview = () => {
       </div>
     </>
   );
-}
+};
 
-export default UserOverview
+export default UserOverview;

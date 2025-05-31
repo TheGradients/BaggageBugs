@@ -27,7 +27,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://baggagebugs-81tp.onrender.com/api/v1/user/register",
+        "api/user/register",
         { firstName, lastName, email, password }
       );
       console.log("hello");

@@ -12,8 +12,17 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 const Bookingpage = () => {
+  // bringing the name of the page from landingpage
+  const location = useLocation();
+  const query = location.state?.query || "";
+
+  useEffect(() => {
+    console.log("Query from previous page:", query);
+  }, [query]);
+  // State variables
   const [sfdata, setsfdata] = useState([]);
   const [fcoord, setfcoord] = useState([]);
   const [distance1, setDistance1] = useState([]);
@@ -56,28 +65,24 @@ const Bookingpage = () => {
 
   const onUnmount = useCallback(() => setMap(null), []);
 
-  
-  
-  
   useEffect(() => {
     navigator.geolocation?.getCurrentPosition(({ coords }) => {
       const { latitude, longitude } = coords;
       setCenter({ lng: longitude, lat: latitude });
     });
   }, []);
-  console.log("user ",center.lat,center.lng);
-  
+  console.log("user ", center.lat, center.lng);
 
   const formatDate = (date) =>
     date instanceof Date ? date.toISOString().split("T")[0] : "";
 
   const handleSearchDestination = async () => {
     if (!destination) return;
-
+    const prevLocation = destination || query;
     try {
       const geoRes = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          destination
+          prevLocation
         )}&key=AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo`
       );
       const geoData = await geoRes.json();
@@ -117,14 +122,14 @@ const Bookingpage = () => {
             const distance1 = await axios.post(
               "https://baggagebugs-81tp.onrender.com/api/v1/map/facilitiesDistanceTime",
               {
-                userCoordinates: [ center.lng, center.lat ],
+                userCoordinates: [center.lng, center.lat],
                 facilityCoordinates: coordsArray[i], // coordsArray[i] is already an array
               },
               { withCredentials: true } // optional third argument for cookies/auth
             );
             const distanceData = distance1.data;
             setDistance1(distanceData);
-            setfDuration( distance1.data.message.duration)
+            setfDuration(distance1.data.message.duration);
             console.log("time : ", distance1.data.message.duration);
             console.log("Distance Data:", distanceData);
             // console.log(distance1Data);?
@@ -178,8 +183,6 @@ const Bookingpage = () => {
       setfTiming(response1.data.data.timing);
       console.log("Facility Details:", response1.data);
       console.log("Facility Details Name:", response1.data.data.name);
-       
-     
     } catch (error) {
       console.log("Error fetching facility details:", error);
     }

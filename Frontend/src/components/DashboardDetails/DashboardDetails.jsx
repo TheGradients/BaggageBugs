@@ -2,8 +2,13 @@ import React, { useState } from "react";
 import "../../styles/DashboardDetails.css";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { AiOutlinePlusCircle } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const DashboardDetails = () => {
+  const navigate = useNavigate();
+  const handleLogoClick = () => {
+    navigate("/landingpage");
+  };
   const menuItems = [
     "Details",
     "Parameters",
@@ -131,7 +136,7 @@ const DashboardDetails = () => {
       <div className="page-details p-2 sm:px-10">
         {/* NAVBAR */}
         <div className="navbar flex flex-col sm:flex-row items-start sm:items-center p-2 m-4 justify-between text-2xl gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogoClick}>
             <div className="logo-bag"></div>
             <div className="logo"></div>
           </div>
