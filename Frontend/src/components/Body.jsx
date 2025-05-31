@@ -1,7 +1,7 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./login/login";
-import Register from "./Register/register";
+import Register from "./Register/Register";
 import Partneroverview from "./Partner/Partneroverview";
 import LandingPage from "./landingPage/LandingPage";
 import DashboardDetails from "./DashboardDetails/DashboardDetails";
