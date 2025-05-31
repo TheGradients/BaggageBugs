@@ -1,13 +1,17 @@
 import React from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
-
-const Reservation = () => {
+import { useNavigate } from "react-router-dom";
+const Reviews = () => {
+  const navigate = useNavigate();
+  const handleLogoClick = () => {
+    navigate("/landingpage");
+  };
   return (
     <>
       <div className="page-details p-2 sm:px-10">
         {/* NAVBAR */}
         <div className="navbar flex flex-row flex-wrap items-center justify-between p-2 m-4 text-xl sm:text-2xl gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogoClick}>
             <div className="logo-bag"></div>
             <div className="logo"></div>
           </div>
@@ -103,4 +107,4 @@ const Reservation = () => {
   );
 };
 
-export default Reservation;
+export default Reviews;
