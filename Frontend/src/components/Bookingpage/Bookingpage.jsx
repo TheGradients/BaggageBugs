@@ -78,11 +78,11 @@ const Bookingpage = () => {
 
   const handleSearchDestination = async () => {
     if (!destination) return;
-
+    const prevLocation = destination || query;
     try {
       const geoRes = await fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          destination
+          prevLocation
         )}&key=AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo`
       );
       const geoData = await geoRes.json();
