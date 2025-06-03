@@ -116,10 +116,8 @@ const getFacilities = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Unauthorized");
     }
     try {
-        const facilities = await Facility.findOne({
-            where: {
-                userId: user.id
-            }
+        const facilities = await Facility.find({
+            userId: user._id
         });
         return res
             .status(200)
@@ -130,4 +128,23 @@ const getFacilities = asyncHandler(async (req, res) => {
     }
 });
 
-export { registerFacility, getFacilities , editFacility};
+const getFacilityById = asyncHandler(async (req, res) => {
+    const { id } = req.query;
+    if (!id) {
+        throw new ApiError(400, "Facility ID is required");
+    }
+    const facility = await Facility.findById(id);
+    if (!facility) {
+        throw new ApiError(404, "Facility not found");
+    }
+    try {
+        return res
+            .status(200)
+            .json(new ApiResponse(200, facility, "Facility fetched successfully"));
+    }
+    catch (error) {
+        throw new ApiError(500, error || "Internal Server Error");
+    }
+});
+
+export { registerFacility, getFacilities, getFacilityById };

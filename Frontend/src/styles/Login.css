@@ -36,29 +36,49 @@
 {
     height: 20px;
     width: 20px;
-    background-image: url("../assets/Google.png");
+    background-image: url("../assets/partner1.png");
     background-size: cover;
 }
 .fbimg
 {
     height: 20px;
     width: 20px;
-    background-image: url("../assets/Facebook.png");
+    background-image: url("../assets/Settings.svg");
     background-size: cover;
 }
 .bimg
 {
     height: 20px;
     width: 20px;
-    background-image: url("../assets/OnlineStore.png");
+    background-image: url("../assets/Suitcase.svg");
     background-size: cover;
 }
+.starimg{
+    height: 25px;
+    width: 25px;
+    background-image: url("../assets/partner2.svg");
+    background-size: cover;
+}
+.logoutimg{
+    height: 25px;
+    width: 25px;
+    background-image: url("../assets/partner1.png");
+    background-size: cover;
+}
+.reviewimg{
+    height: 25px;
+    width: 25px;
+    background-image: url("../assets/Rating.svg");
+    background-size: cover;
+}
+
 .cop{
     height: 50px;
     width: 50px;
-    background-image: url("../assets/Chatbot.png");
+    background-image: url("../assets/partner2.svg");
     background-size: cover;
 }
+
 @media screen and (max-width: 768px) {
     
     /* Adjust the layout */

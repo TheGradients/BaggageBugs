@@ -2,7 +2,8 @@ import { Router } from 'express';
 
 import {
     registerFacility,
-    getFacilities
+    getFacilities,
+    getFacilityById
 } from '../controllers/facility.controller.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
 
