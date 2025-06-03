@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import "../../styles/LandingPage.css";
@@ -18,11 +18,21 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 const LandingPage = () => {
-  const location = useLocation();
-  const isLoggedIn = location.state?.isLoggedIn;
+  // const location = useLocation();
+  // const[isLoggedIn, setIsLoggedIn] = useState(false);
+  // const isLoggedIn1 = location.state?.isLoggedIn;
+  // React.useEffect(() => {
+  //   if (location.state?.isLoggedIn) {
+  //     setIsLoggedIn(true);
+  //   }
+  // }, [location.state]);
+  // const navigate = useNavigate();
+  // console.log("Is Logged In:", isLoggedIn);
+  const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const navigate = useNavigate();
-  console.log("Is Logged In:", isLoggedIn);
+  const [query, setQuery] = useState("");
   const imgArr = [
     {
       img: "/Tower.svg",
@@ -110,7 +120,7 @@ const LandingPage = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "", // Replace with your key
+    googleMapsApiKey: "AIzaSyAEOzozYCsDelJTwhv-pOJtxNk69SPgEzo", // Replace with your key
   });
 
   const onLoad = React.useCallback(
@@ -125,7 +135,7 @@ const LandingPage = () => {
   const onUnmount = React.useCallback(function callback(map) {
     setMap(null);
   }, []);
-
+  const [isPartner, setIsPartner] = useState(false);
   return (
     <>
       <div className="page p-2 pl-15 pr-15">
@@ -152,9 +162,10 @@ const LandingPage = () => {
                 color="#FA8128"
                 onClick={() => {
                   if (isLoggedIn) {
+                    navigate("/useroverview");
+                  }
+                  if (isPartner && isLoggedIn) {
                     navigate("/partneroverview");
-                  } else {
-                    navigate("/");
                   }
                 }}
                 className="cursor-pointer"
@@ -185,6 +196,8 @@ const LandingPage = () => {
                   className="border-2 rounded-4xl p-2 w-full mb-2 text-[#63C5DA] font-extrabold shadow-md pr-12 h-12"
                   placeholder="Barcelona"
                   type="text"
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && navigate("/bookingpage", { state: { query, isLoggedIn } })}
                 />
                 <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]">
                   <IoIosSearch size={24} />
@@ -193,7 +206,7 @@ const LandingPage = () => {
 
               <button
                 onClick={() => {
-                  navigate("/bookingpage", { state: { isLoggedIn } });
+                  navigate("/bookingpage", { state: { isLoggedIn , query } });
                 }}
                 className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md"
               >
@@ -345,17 +358,19 @@ const LandingPage = () => {
           <div className="luggage z-10 absolute translate-x-[1050px] -translate-y-[580px]"></div>
         </div>
         <div className="section-6 mt-25 ml-[7%]">
-          <div className="text-[#FA8128] text-[45px] font-bold  ">
+          <div className="text-[#FA8128] text-[45px] font-bold">
             Accessible Everywhere!
           </div>
-          <div className="text-[#63C5DA] text-[45px]   ">
+          <div className="text-[#63C5DA] text-[45px]">
             Safe and reliable luggage storage{" "}
             <span className="text-[#FA8128] font-medium">WORLDWIDE.</span>
           </div>
-          <div className="">
+
+          {/* Set height and width for the map */}
+          <div className="mt-8 w-[90%] h-[500px] relative">
             {isLoaded && (
               <GoogleMap
-                mapContainerStyle={containerStyle}
+                mapContainerStyle={{ width: "100%", height: "100%" }}
                 center={center}
                 zoom={14}
                 onLoad={onLoad}
@@ -367,6 +382,7 @@ const LandingPage = () => {
             )}
           </div>
         </div>
+
         <div className="section-7 mt-25 mx-auto max-w-[90%]">
           <div className="text-[#FA8128] text-[45px] font-bold text-center ">
             Frequently <span className="text-[#63C5DA]">Asked Questions</span>
@@ -511,8 +527,11 @@ const LandingPage = () => {
             </div>
             <div className="mt-10">
               <button
-                onClick={() => navigate("/become-partner")}
-                className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
+                onClick={() => {
+                  setIsPartner(true);
+                  navigate("/partneroverview");
+                }}
+                className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition cursor-pointer"
               >
                 Become a Partner
               </button>
