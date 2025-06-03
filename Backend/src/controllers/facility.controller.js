@@ -63,6 +63,7 @@ const registerFacility = asyncHandler(async (req, res) => {
 
 const editFacility = asyncHandler(async (req, res) => {
     const { name, email, phone, address, type, capacity, limited, services, timing } = req.body;
+    const {id} = req.query;
 
     if (!name || !email || !phone || !address || !type || !capacity || !limited || !services) {
         throw new ApiError(400, "Please fill all fields");
@@ -73,9 +74,8 @@ const editFacility = asyncHandler(async (req, res) => {
     }
 
     const facility = await Facility.findOne({
-        where: {
-            userId: user.id
-        }
+        _id: id,
+        userId: user._id
     });
     if (!facility) {
         throw new ApiError(404, "Facility not found");
@@ -147,4 +147,4 @@ const getFacilityById = asyncHandler(async (req, res) => {
     }
 });
 
-export { registerFacility, getFacilities, getFacilityById };
+export { registerFacility, getFacilities, getFacilityById ,editFacility};

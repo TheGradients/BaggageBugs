@@ -4,7 +4,8 @@ import ApiResponse from "../utils/ApiResponse.js";
 import Review from "../models/review.model.js";
 
 const createReview = asyncHandler(async (req, res) => {
-    const { facilityId, rating, feedback } = req.body;
+    const { rating, feedback } = req.body;
+    const { facilityId } = req.query;
     const userId = req.user._id;
 
     if (!facilityId || !rating || !feedback) {
