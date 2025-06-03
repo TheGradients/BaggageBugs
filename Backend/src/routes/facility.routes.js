@@ -10,5 +10,6 @@ const router = Router();
 
 router.route('/register').post(verifyJWT, registerFacility);
 router.route('/').get(verifyJWT, getFacilities);
+router.route('/edit').put(verifyJWT, registerFacility);
 
 export default router;

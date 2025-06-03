@@ -61,6 +61,55 @@ const registerFacility = asyncHandler(async (req, res) => {
     }
 });
 
+const editFacility = asyncHandler(async (req, res) => {
+    const { name, email, phone, address, type, capacity, limited, services, timing } = req.body;
+
+    if (!name || !email || !phone || !address || !type || !capacity || !limited || !services) {
+        throw new ApiError(400, "Please fill all fields");
+    }
+    const user = req.user;
+    if (!user) {
+        throw new ApiError(401, "Unauthorized");
+    }
+
+    const facility = await Facility.findOne({
+        where: {
+            userId: user.id
+        }
+    });
+    if (!facility) {
+        throw new ApiError(404, "Facility not found");
+    }
+
+    const geolocation = await getCoordinates(address);
+
+    if (!geolocation) {
+        throw new ApiError(400, "Unable to fetch geolocation for the provided address");
+    }
+
+    try {
+        facility.name = name;
+        facility.email = email;
+        facility.phone = phone;
+        facility.address = address;
+        facility.type = type;
+        facility.capacity = capacity;
+        facility.limited = limited;
+        facility.services = services;
+        facility.timing = timing;
+        facility.geolocation = geolocation;
+
+        await facility.save();
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, facility, "Facility updated successfully"));
+    }
+    catch (error) {
+        throw new ApiError(500, error || "Internal Server Error");
+    }
+}); 
+
 const getFacilities = asyncHandler(async (req, res) => {
     const user = req.user;
     if (!user) {
@@ -81,4 +130,4 @@ const getFacilities = asyncHandler(async (req, res) => {
     }
 });
 
-export { registerFacility, getFacilities };
+export { registerFacility, getFacilities , editFacility};
