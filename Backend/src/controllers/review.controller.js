@@ -32,6 +32,28 @@ const createReview = asyncHandler(async (req, res) => {
     }
 });
 
+const getReviews = asyncHandler(async (req, res) => {
+    const { facilityId } = req.query;
+
+    if (!facilityId) {
+        throw new ApiError(400, "Facility ID is required");
+    }
+
+    try {
+        const reviews = await Review.find({ 
+            facilityId: facilityId })
+            .populate("userId", "name email")
+            .sort({ createdAt: -1 });
+        return res
+            .status(200)
+            .json(new ApiResponse(200, reviews, "Reviews fetched successfully"));
+
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+});
+
 export {
-    createReview
+    createReview,
+    getReviews
 }
