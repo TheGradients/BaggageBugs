@@ -50,4 +50,8 @@ app.use("/api/v1/booking", bookingRouter);
 import mapRouter from "./routes/map.routes.js";
 app.use("/api/v1/map", mapRouter);
 
+//review routes
+import reviewRouter from "./routes/review.routes.js";
+app.use("/api/v1/review", reviewRouter);
+
 export default app;
