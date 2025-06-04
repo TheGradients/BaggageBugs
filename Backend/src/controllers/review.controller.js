@@ -42,7 +42,7 @@ const getReviews = asyncHandler(async (req, res) => {
     try {
         const reviews = await Review.find({ 
             facilityId: facilityId })
-            .populate("userId", "name email")
+            .populate("userId ", "name email")
             .sort({ createdAt: -1 });
         return res
             .status(200)
