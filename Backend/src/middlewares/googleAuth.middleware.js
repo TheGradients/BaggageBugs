@@ -12,7 +12,7 @@ const googleAuth = asyncHandler(async (req, res, next) => {
             const newUser = await User.create({
                 name: req.user?._json?.name,
                 email: req.user?._json?.email,
-                password: "",
+                password: "xxxxxxxxxxx",
             });
             savedUser = await newUser.save();
         }
@@ -21,9 +21,8 @@ const googleAuth = asyncHandler(async (req, res, next) => {
         for (const role in findUser ? findUser.role : savedUser.role) {
             tokenRole = tokenRole + (findUser ? findUser.role : savedUser.role)[role] + " ";
         }
-        res
-            .cookie('token', token, COOKIE_OPTIONS)
-            .cookie('role', tokenRole, COOKIE_OPTIONS);
+        res.cookie('token', token, COOKIE_OPTIONS);
+        res.cookie('role', tokenRole, COOKIE_OPTIONS);
         next();
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error");
