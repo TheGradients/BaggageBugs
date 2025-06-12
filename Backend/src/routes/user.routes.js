@@ -23,7 +23,7 @@ router.route('/auth/google').get(passport.authenticate('google', {
     prompt: 'select_account',
 }));
 router.route('/auth/google/callback').get(passport.authenticate('google', {
-    failureRedirect: `${process.env.CLIENT_URL}/login`,
+    failureRedirect: `${process.env.CLIENT_URL}`,
 }), googleAuth, googleCallback);
 
 router.route('/logout').post(verifyJWT, logout);

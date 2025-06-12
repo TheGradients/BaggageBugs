@@ -71,7 +71,7 @@ const login = asyncHandler(async (req, res) => {
 
 const googleCallback = asyncHandler(async (req, res) => {
     return res
-        .redirect(`${process.env.CLIENT_URL}/landingPage`);
+        .redirect(`${process.env.CLIENT_URL}/landingpage`);
 });
 
 const logout = asyncHandler(async (req, res) => {
