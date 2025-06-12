@@ -70,8 +70,8 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const googleCallback = asyncHandler(async (req, res) => {
-    res.cookie('token', token, COOKIE_OPTIONS);
-    res.cookie('role', tokenRole, COOKIE_OPTIONS);
+    res.cookie('token', req.token, COOKIE_OPTIONS);
+    res.cookie('role', req.tokenRole, COOKIE_OPTIONS);
     return res
         .redirect(`${process.env.CLIENT_URL}/landingpage`);
 });
