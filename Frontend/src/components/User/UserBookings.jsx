@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
-const Reservation = () => {
+const UserBookings = () => {
+  const [isbooking, setIsBooking] = useState(false);
   const navigate = useNavigate();
   const handleLogoClick = () => {
     navigate("/landingpage");
@@ -37,22 +38,21 @@ const Reservation = () => {
         <div className="top-div w-full flex flex-col lg:flex-row flex-wrap gap-4 items-start lg:items-center justify-between p-4 pl-10 pr-10">
           <div className="text-div font-bold">
             <div className="text-div-1 text-[#FA8128] text-4xl sm:text-5xl mb-2">
-              Reservations
+              Your Bookings
             </div>
-            <div className="text-div-2 text-2xl sm:text-3xl text-[#63C5DA]">
-              No Upcoming Reservations
-            </div>
+            {isbooking ? (
+              <div className="text-div-2 text-2xl sm:text-3xl text-[#63C5DA]"></div>
+            ) : (
+              <div className="text-div-2 text-2xl sm:text-3xl text-[#63C5DA]">
+                No Upcoming Reservations
+              </div>
+            )}
           </div>
 
           <div className="flex flex-wrap gap-4 items-center">
-            <input
-              className="content-input border-2 border-[#63C5DA] rounded-[2rem] px-4 py-2 text-[16px] sm:text-[18px] md:text-[20px] w-full sm:w-60"
-              placeholder="Search by reference"
-            />
-
             <div className="relative w-full sm:w-40">
               <select className="appearance-none w-full border-2 border-[#FA8128] rounded-lg p-2 pr-10 bg-white text-base">
-                <option value="en">Sort By</option>
+                <option value="en">Upcoming</option>
               </select>
               <div className="absolute inset-y-0 right-3 flex items-center pointer-events-none">
                 <img src="/Dropdown.svg" alt="Dropdown" className="w-5 h-5" />
@@ -71,42 +71,54 @@ const Reservation = () => {
         </div>
 
         {/* BOTTOM SECTION */}
-        <div className="bottom-div w-full h-[65vh] pl-4 sm:pl-10 pr-4 sm:pr-10 overflow-auto">
-          <div className="reviews-div border-2 border-[#63C5DA] p-5 space-y-4">
-            <div className="reviews-top flex flex-col md:flex-row justify-between items-start md:items-center p-4 border-b border-gray-200 text-[#FA8128] gap-2">
-              <div className="name font-semibold text-lg">
-                Pratham Karmarkar
+        <div className="bottom-div  w-full pl-4 sm:pl-10 pr-4 sm:pr-10 overflow-auto">
+          {isbooking ? (
+            <div className="reviews-div flex border-2 border-[#63C5DA] p-5 space-y-4">
+              <div className="mr-5 ">
+                <img
+                  src="/BookingPhoto.svg"
+                  className="h-auto w-[90%] object-cover shadow-[-8px_-8px_10px_#FA8128,-8px_8px_10px_#FA8128]"
+                />
               </div>
-              <div className="booking-id text-sm md:text-base">
-                Booking Id : 1234
-              </div>
-            </div>
-
-            <div className="luggage-name text-[#FA8128] font-medium text-lg">
-              Luggage 001
-            </div>
-            <div className="address text-[#FA8128] text-sm md:text-base">
-              Queens Maritoon, Melbourne
-            </div>
-
-            <div className="reviews-bottom mt-4 flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <div className="drop border-2 border-[#63C5DA] px-4 py-2 rounded-md text-sm text-[#FA8128] shadow-sm">
-                  drop off date
+              <div className="flex flex-col justify-between w-full">
+                <div>
+                  <div className="luggage-name text-[#FA8128] font-medium text-lg">
+                    Luggage 001
+                  </div>
+                  <div className="address text-[#FA8128] text-sm md:text-base">
+                    Queens Maritoon, Melbourne
+                  </div>
                 </div>
-                <div className="pickup border-2 border-[#63C5DA] px-4 py-2 rounded-md text-sm text-[#FA8128] shadow-sm">
-                  pickup date
+                <div>
+                  <div className="reviews-bottom mt-4 flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
+                    <div className="flex flex-col sm:flex-row gap-3">
+                      <div className="drop border-2 border-[#63C5DA] px-4 py-2 rounded-md text-sm text-[#FA8128] shadow-sm">
+                        drop off date
+                      </div>
+                      <div className="pickup border-2 border-[#63C5DA] px-4 py-2 rounded-md text-sm text-[#FA8128] shadow-sm">
+                        pickup date
+                      </div>
+                    </div>
+                    <button className="bg-[#FA8128] text-white px-4 py-2 rounded-3xl self-start md:self-auto">
+                      Cancel
+                    </button>
+                  </div>
                 </div>
               </div>
-              <button className="bg-[#FA8128] text-white px-4 py-2 rounded-3xl self-start md:self-auto">
-                Save
-              </button>
             </div>
-          </div>
+          ) : (
+            <div className="bottom-div w-full h-full flex justify-center items-center pl-4 sm:pl-10 pr-4 sm:pr-10 overflow-auto">
+              <img
+                src="Reservation.svg"
+                alt="No Bookings"
+                className="w-[45%] h-[50%] object-cover"
+              />
+            </div>
+          )}
         </div>
       </div>
     </>
   );
 };
 
-export default Reservation;
+export default UserBookings;

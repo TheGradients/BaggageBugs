@@ -32,6 +32,7 @@ const LandingPage = () => {
   // console.log("Is Logged In:", isLoggedIn);
   const isLoggedIn = useSelector((state) => state.login.isLoggedIn);
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
   const imgArr = [
     {
       img: "/Tower.svg",
@@ -195,6 +196,8 @@ const LandingPage = () => {
                   className="border-2 rounded-4xl p-2 w-full mb-2 text-[#63C5DA] font-extrabold shadow-md pr-12 h-12"
                   placeholder="Barcelona"
                   type="text"
+                  onChange={(e) => setQuery(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && navigate("/bookingpage", { state: { query, isLoggedIn } })}
                 />
                 <span className="absolute right-4 top-1/2 transform -translate-y-4 text-[#63C5DA]">
                   <IoIosSearch size={24} />
@@ -203,7 +206,7 @@ const LandingPage = () => {
 
               <button
                 onClick={() => {
-                  navigate("/bookingpage", { state: { isLoggedIn } });
+                  navigate("/bookingpage", { state: { isLoggedIn , query } });
                 }}
                 className="pl-12 pr-12 py-2 text-white rounded-4xl bg-[#FA8128] shadow-md"
               >
@@ -355,17 +358,19 @@ const LandingPage = () => {
           <div className="luggage z-10 absolute translate-x-[1050px] -translate-y-[580px]"></div>
         </div>
         <div className="section-6 mt-25 ml-[7%]">
-          <div className="text-[#FA8128] text-[45px] font-bold  ">
+          <div className="text-[#FA8128] text-[45px] font-bold">
             Accessible Everywhere!
           </div>
-          <div className="text-[#63C5DA] text-[45px]   ">
+          <div className="text-[#63C5DA] text-[45px]">
             Safe and reliable luggage storage{" "}
             <span className="text-[#FA8128] font-medium">WORLDWIDE.</span>
           </div>
-          <div className="">
+
+          {/* Set height and width for the map */}
+          <div className="mt-8 w-[90%] h-[500px] relative">
             {isLoaded && (
               <GoogleMap
-                mapContainerStyle={containerStyle}
+                mapContainerStyle={{ width: "100%", height: "100%" }}
                 center={center}
                 zoom={14}
                 onLoad={onLoad}
@@ -377,6 +382,7 @@ const LandingPage = () => {
             )}
           </div>
         </div>
+
         <div className="section-7 mt-25 mx-auto max-w-[90%]">
           <div className="text-[#FA8128] text-[45px] font-bold text-center ">
             Frequently <span className="text-[#63C5DA]">Asked Questions</span>
@@ -523,8 +529,9 @@ const LandingPage = () => {
               <button
                 onClick={() => {
                   setIsPartner(true);
+                  navigate("/partneroverview");
                 }}
-                className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition"
+                className="bg-[#FA8128] text-white px-3 py-2 rounded-lg shadow-md hover:bg-[#f77a20] transition cursor-pointer"
               >
                 Become a Partner
               </button>

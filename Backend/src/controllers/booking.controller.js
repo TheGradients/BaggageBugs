@@ -70,9 +70,68 @@ const togglePaymentStatus = asyncHandler(async (req, res) => {
     }
 });
 
+const getReservations = asyncHandler(async (req, res) => {
+    const { role, _id: userId } = req.user; 
+    const {facilityId} = req.query;
+
+    if (!facilityId) {
+        throw new ApiError(400, "Facility ID is required");
+    } 
+
+    if ( role[0] === 'user') {
+        throw new ApiError(403, 'You are not authorised to view reservations');
+    }
+
+    try {
+        const reservations = await Bookings.find({ facilityId : facilityId })
+            .populate("facilityId", "name location")
+            .sort({ createdAt: -1 });
+    
+        return res
+            .status(200)
+            .json(new ApiResponse(200, reservations, "Reservations fetched successfully"));
+
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+
+});
+
+const getParticularReservation = asyncHandler(async (req, res) => {
+    const { role, _id: userId } = req.user;
+    const { bookingId } = req.query;
+
+    if (!bookingId) {
+        throw new ApiError(400, "Booking ID is required");
+    }
+
+    if (role[0] === 'user') {
+        throw new ApiError(403, 'You are not authorised to view this reservation');
+    }
+
+    try {
+        const reservation = await Bookings.findById(bookingId)
+            .populate("facilityId", "name location")
+            .populate("userId", "name email");
+
+        if (!reservation) {
+            throw new ApiError(404, "Reservation not found");
+        }
+
+        return res
+            .status(200)
+            .json(new ApiResponse(200, reservation, "Reservation fetched successfully"));
+
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+}); 
+
 
 export
 {
   makeBooking,
-  togglePaymentStatus
+  togglePaymentStatus,
+  getReservations,
+  getParticularReservation
 }

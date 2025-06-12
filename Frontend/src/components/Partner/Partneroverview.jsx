@@ -1,14 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "../../styles/Login.css";
-
+import axios from "axios";
 const Partneroverview = () => {
   const navigate = useNavigate();
 
   const GoogleIcon = () => <span className="googleimg"></span>;
   const FacebookIcon = () => <span className="fbimg"></span>;
   const StoreIcon = () => <span className="bimg"></span>;
+  const ReviewsIcon = () => <span className="reviewimg"></span>;
   const StarIcon = () => <span className="starimg"></span>;
+  const LogoutIcon = () => <span className="logoutimg"></span>;
 
   const SocialButton = ({ icon, text, onClick }) => (
     <button
@@ -26,9 +28,19 @@ const Partneroverview = () => {
   const handleBookingsClick = () => {
     navigate("/reservation");
   };
-  const handleReviewsClick = () => {navigate("/reviews")};
+  const handleReviewsClick = () => {
+    navigate("/reviews");
+  };
   const handleAssistanceClick = () => {};
-  const handleLogoutClick = () => {};
+  const handleLogoutClick = async () => {
+    try {
+      const response = await axios.post("api/user/logout");
+      console.log("logged out");
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="flex h-screen w-full overflow-hidden">
@@ -74,7 +86,7 @@ const Partneroverview = () => {
               onClick={handleBookingsClick}
             />
             <SocialButton
-              icon={<StarIcon />}
+              icon={<ReviewsIcon />}
               text="My Reviews"
               onClick={handleReviewsClick}
             />
@@ -84,7 +96,7 @@ const Partneroverview = () => {
               onClick={handleAssistanceClick}
             />
             <SocialButton
-              icon={<StarIcon />}
+              icon={<LogoutIcon />}
               text="Logout"
               onClick={handleLogoutClick}
             />

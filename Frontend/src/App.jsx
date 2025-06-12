@@ -9,12 +9,11 @@ import Body from "./components/Body";
 import LandingPage from "./components/landingPage/LandingPage";
 import DashboardDetails from "./components/DashboardDetails/DashboardDetails";
 // import Login from "./components/login/Login";
-// import Login from "./components/login/Login";
-import Register from "./components/Register/register";
+// import Login from "./components/login/Logi
 import Partneroverview from "./components/Partner/Partneroverview";
 import Profile from "./components/Profile/Profile";
  
-import Reservation from "./components/reservation/Reservation";
+// import Reservation from "./components/reservation/Reservation";
 import Reviews from "./components/Reviews/Reviews";
  
 import Bookingpage from "./components/Bookingpage/Bookingpage";
@@ -23,6 +22,7 @@ import Storage from "./components/Bookingpage/Storage";
 import SuperAdmin from "./components/SuperAdmin/SuperAdmin";
 import SuperAdminUser from "./components/SuperAdmin/SuperAdminUser";
 import UserOverview from "./components/User/UserOverview";
+import UserBookings from "./components/User/UserBookings";
  
 function App() {
   return (
@@ -35,7 +35,7 @@ function App() {
  
       <Body/>    
        {/* <Bookingpage/> */}
-      {/* <Body/>*/}
+      {/* <Body/> */}
       {/* <Onboardingpage/> */}
  
       {/* <Partneroverview/> */}
@@ -46,6 +46,8 @@ function App() {
       {/* <Reviews/> */}
       {/* <Storage/> */}
       {/* <UserOverview/> */}
+      {/* <Onboardingpage/> */}
+      {/* <UserBookings/> */}
     </>
   );
 
