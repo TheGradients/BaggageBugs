@@ -21,6 +21,8 @@ const googleAuth = asyncHandler(async (req, res, next) => {
         for (const role in findUser ? findUser.role : savedUser.role) {
             tokenRole = tokenRole + (findUser ? findUser.role : savedUser.role)[role] + " ";
         }
+        req.token = token;
+        req.tokenRole = tokenRole;
         next();
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error");
