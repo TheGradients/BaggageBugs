@@ -16,7 +16,7 @@ const googleAuth = asyncHandler(async (req, res, next) => {
             });
             savedUser = await newUser.save();
         }
-        const token = generateToken(findUser ? findUser : savedUser);
+        const token = await generateToken(findUser ? findUser : savedUser);
         let tokenRole = "";
         for (const role in findUser ? findUser.role : savedUser.role) {
             tokenRole = tokenRole + (findUser ? findUser.role : savedUser.role)[role] + " ";

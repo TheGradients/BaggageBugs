@@ -8,7 +8,8 @@ import {
     changePassword,
     getUser,
     toggleEmail,
-    googleCallback
+    googleCallback,
+    setCookies
 } from '../controllers/user.controller.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
 import googleAuth from "../middlewares/googleAuth.middleware.js"
@@ -25,6 +26,7 @@ router.route('/auth/google').get(passport.authenticate('google', {
 router.route('/auth/google/callback').get(passport.authenticate('google', {
     failureRedirect: `${process.env.CLIENT_URL}`,
 }), googleAuth, googleCallback);
+router.route('/setCookies').post(setCookies);
 
 router.route('/logout').post(verifyJWT, logout);
 router.route('/addDetails').post(verifyJWT, addDetails);

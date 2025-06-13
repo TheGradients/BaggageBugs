@@ -70,10 +70,28 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const googleCallback = asyncHandler(async (req, res) => {
-    res.cookie('token', req.token, COOKIE_OPTIONS);
-    res.cookie('role', req.tokenRole, COOKIE_OPTIONS);
+    const token = req.token;
+    const tokenRole = req.tokenRole;
+    const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${tokenRole}`;
     return res
-        .redirect(`${process.env.CLIENT_URL}/landingpage`);
+        .redirect(redirectUrl);
+});
+
+const setCookies = asyncHandler(async (req, res) => {
+    const { token, role } = req.body;
+
+    if (!token || !role) {
+        return res.status(400).json({ message: "Missing token or role" });
+    }
+
+    try {
+        res.cookie("token", token, COOKIE_OPTIONS);
+        res.cookie("role", role, COOKIE_OPTIONS);
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+        
+    }
 });
 
 const logout = asyncHandler(async (req, res) => {
@@ -210,5 +228,6 @@ export {
     addDetails, 
     changePassword, 
     getUser,
-    toggleEmail
+    toggleEmail,
+    setCookies
 };
