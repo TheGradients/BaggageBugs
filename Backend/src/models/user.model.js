@@ -37,6 +37,14 @@ const userSchema = new Schema({
         enum: ROLES, 
         default: ROLES[1] 
     },
+    otp: {
+        type: String,
+        default: null,
+    },
+    canChangePassword: {
+        type: Boolean,
+        default: false,
+    },
 }, { 
     timestamps: true 
 });
