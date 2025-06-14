@@ -1,7 +1,7 @@
 const COOKIE_OPTIONS = {
     httpOnly: true,
     secure: true,
-    sameSite: 'lax',
+    sameSite: 'none',
 };
 
 const LUGGAGE_TYPES = [
