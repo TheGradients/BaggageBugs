@@ -93,10 +93,8 @@ const setCookies = asyncHandler(async (req, res) => {
     }
 
     try {
-        res.setHeader("Set-Cookie", [
-            `token=${token}; Path=/; Secure; HttpOnly; SameSite=None; Partitioned`,
-            `role=${role}; Path=/; Secure; HttpOnly; SameSite=None; Partitioned`
-        ]);
+        res.cookie("token", token, COOKIE_OPTIONS);
+        res.cookie("role", role, COOKIE_OPTIONS);
         return res.status(200).json({ success: true });
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error");
