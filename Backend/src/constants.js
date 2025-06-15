@@ -1,9 +1,9 @@
-const COOKIE_OPTIONS = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/'
-};
+// const COOKIE_OPTIONS = {
+//     httpOnly: true,
+//     secure: true,
+//     sameSite: 'none',
+//     path: '/'
+// };
 
 const LUGGAGE_TYPES = [
     "Hand Luggage",
@@ -24,4 +24,4 @@ const ROLES = [
     "partner"
 ];
 
-export { COOKIE_OPTIONS, LUGGAGE_TYPES, SERVICES, ROLES };
+export { LUGGAGE_TYPES, SERVICES, ROLES };

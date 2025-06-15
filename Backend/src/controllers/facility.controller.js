@@ -3,7 +3,6 @@ import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import Facility from "../models/facility.model.js";
 import User from "../models/user.model.js";
-import { COOKIE_OPTIONS } from "../constants.js";
 import { getCoordinates } from "../services/googleMaps.services.js";
 
 const registerFacility = asyncHandler(async (req, res) => {
@@ -52,9 +51,7 @@ const registerFacility = asyncHandler(async (req, res) => {
         }
         return res
             .status(201)
-            .clearCookie("role")
-            .cookie("role", tokenRole, COOKIE_OPTIONS)
-            .json(new ApiResponse(201, facility, "Facility created successfully"));
+            .json(new ApiResponse(201, { facility, role: tokenRole }, "Facility created successfully"));
     }
     catch (error) {
         throw new ApiError(500, error || "Internal Server Error");

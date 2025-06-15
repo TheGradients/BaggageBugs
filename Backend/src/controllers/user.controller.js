@@ -2,7 +2,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
-import { COOKIE_OPTIONS } from "../constants.js";
+// import { COOKIE_OPTIONS } from "../constants.js";
 import { generateToken } from "../helper/jwt.helper.js";
 import { hashPassword, matchPassword } from "../helper/bcrypt.helper.js";
 import {
@@ -67,11 +67,14 @@ const login = asyncHandler(async (req, res) => {
     }
     try {
         await sendLoginEmail(user.email);
-        res.cookie("token", token, COOKIE_OPTIONS);
-        res.cookie("role", tokenRole, COOKIE_OPTIONS);
+        // res.cookie("token", token, COOKIE_OPTIONS);
+        // res.cookie("role", tokenRole, COOKIE_OPTIONS);
         return res    
             .status(200)
-            .json(new ApiResponse(200, null, "User logged in successfully"));
+            .json(new ApiResponse(200, {
+                token,
+                role: tokenRole.trim(),
+            }, "User logged in successfully"));
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error.");
     }
@@ -93,8 +96,8 @@ const setCookies = asyncHandler(async (req, res) => {
     }
 
     try {
-        res.cookie("token", token, COOKIE_OPTIONS);
-        res.cookie("role", role, COOKIE_OPTIONS);
+        // res.cookie("token", token, COOKIE_OPTIONS);
+        // res.cookie("role", role, COOKIE_OPTIONS);
         return res.status(200).json({ success: true });
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error");
@@ -104,8 +107,8 @@ const setCookies = asyncHandler(async (req, res) => {
 const logout = asyncHandler(async (req, res) => {
     try {
         return res
-        .clearCookie("token")
-        .clearCookie("role")
+        // .clearCookie("token")
+        // .clearCookie("role")
         .status(200)
         .json(new ApiResponse(200, null, "User logged out successfully"));
     } catch (error) {
