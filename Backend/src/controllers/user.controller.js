@@ -69,6 +69,7 @@ const login = asyncHandler(async (req, res) => {
         await sendLoginEmail(user.email);
         // res.cookie("token", token, COOKIE_OPTIONS);
         // res.cookie("role", tokenRole, COOKIE_OPTIONS);
+        const role = tokenRole.trim();
         const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${role}`;
         return res
             .redirect(redirectUrl);
