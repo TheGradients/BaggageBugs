@@ -2,7 +2,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import User from "../models/user.model.js";
 import { generateToken } from "../helper/jwt.helper.js";
-import { COOKIE_OPTIONS } from "../constants.js";
 
 const googleAuth = asyncHandler(async (req, res, next) => {
     try {

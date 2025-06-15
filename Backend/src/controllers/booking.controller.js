@@ -4,7 +4,7 @@ import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
 import Bookings from "../models/bookings.model.js";
 import Facility from "../models/facility.model.js";
-import { COOKIE_OPTIONS } from "../constants.js";
+// import { COOKIE_OPTIONS } from "../constants.js";
 import { generateToken } from "../helper/jwt.helper.js";
 
 const makeBooking = asyncHandler(async (req, res) => {
