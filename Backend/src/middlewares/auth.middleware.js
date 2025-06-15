@@ -5,14 +5,15 @@ import User from "../models/user.model.js"
 const verifyToken = asyncHandler(async (req, res, next) => {
     try {
         const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+        // console.log(token);
         if (!token) {
             return res.status(401).json({
                 success: false,
                 message: "Unauthorized Access. No token provided.",
             });
         }
-        const tokenValue = token.split(" ")[1];
-        const decoded = await tokenValidation(tokenValue);
+        // const tokenValue = token.split(" ")[1];
+        const decoded = await tokenValidation(token);
         const user = await User.findById(
             decoded.id,
         );
