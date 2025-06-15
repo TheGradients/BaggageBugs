@@ -69,12 +69,9 @@ const login = asyncHandler(async (req, res) => {
         await sendLoginEmail(user.email);
         // res.cookie("token", token, COOKIE_OPTIONS);
         // res.cookie("role", tokenRole, COOKIE_OPTIONS);
-        return res    
-            .status(200)
-            .json(new ApiResponse(200, {
-                token,
-                role: tokenRole.trim(),
-            }, "User logged in successfully"));
+        const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${role}`;
+        return res
+            .redirect(redirectUrl);
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error.");
     }
@@ -83,7 +80,8 @@ const login = asyncHandler(async (req, res) => {
 const googleCallback = asyncHandler(async (req, res) => {
     const token = req.token;
     const tokenRole = req.tokenRole;
-    const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${tokenRole}`;
+    const role = tokenRole.trim();
+    const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${role}`;
     return res
         .redirect(redirectUrl);
 });
