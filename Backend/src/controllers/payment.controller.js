@@ -2,13 +2,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import axios from "axios";
-import { Cashfree } from "cashfree-pg";
-
-const cashfree = new Cashfree(
-  Cashfree.SANDBOX,
-  process.env.CASHFREE_APP_ID,
-  process.env.CASHFREE_SECRET_KEY
-);
 
 const createPayment = asyncHandler( async (req, res) => {
   const { orderId, orderAmount, customerEmail, customerPhone, customerName } = req.body;
