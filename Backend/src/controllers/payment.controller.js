@@ -27,7 +27,7 @@ const createPayment = asyncHandler( async (req, res) => {
           customer_name: customerName,
         },
         order_meta: {
-          return_url: "https://your-frontend.com/payment-success?order_id={order_id}",
+          return_url: "https://baggagebugs-f.vercel.app/reservation",
         },
       },
       {
