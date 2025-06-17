@@ -1,25 +1,36 @@
-import ApiError from "../utils/ApiError.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import { tokenValidation } from "../helper/jwt.helper.js";
 import User from "../models/user.model.js"
 
-const verifyToken = asyncHandler(async (req, _, next) => {
+const verifyToken = asyncHandler(async (req, res, next) => {
     try {
         const token = req.cookies?.token || req.header("Authorization")?.replace("Bearer ", "");
+        // console.log(token);
         if (!token) {
-            throw new ApiError(401, "Unauthorized Access.");
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized Access. No token provided.",
+            });
         }
-        const decoded = await tokenValidation(token);   
+        // const tokenValue = token.split(" ")[1];
+        const decoded = await tokenValidation(token);
         const user = await User.findById(
             decoded.id,
         );
         if (!user) {
-            throw new ApiError(401, "Unauthorized Access.");
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized Access. User not found.",
+            });
         }
         req.user = user;
         next();
     } catch (error) {
-        throw new ApiError(401, error.message || "Invalid Token.");
+        console.error("Token verification error:", error);
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized Access. Invalid token.",
+        });
     }
 });
 

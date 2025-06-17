@@ -2,9 +2,15 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
-import { COOKIE_OPTIONS } from "../constants.js";
+// import { COOKIE_OPTIONS } from "../constants.js";
 import { generateToken } from "../helper/jwt.helper.js";
 import { hashPassword, matchPassword } from "../helper/bcrypt.helper.js";
+import {
+    sendRegisterationEmail,
+    sendLoginEmail,
+    sendPasswordResetEmail
+} from "../utils/nodemailer/userEmail.js";
+import generateOTP from "../helper/generateOTP.helper.js";
 
 const register = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, password } = req.body;
@@ -27,6 +33,7 @@ const register = asyncHandler(async (req, res) => {
             email,
             password: hashedPassword,
         });
+        await sendRegisterationEmail(user.email);
         return res
             .status(201)
             .json(new ApiResponse(201, user, "User created successfully"));
@@ -59,26 +66,48 @@ const login = asyncHandler(async (req, res) => {
         tokenRole = tokenRole + user.role[role] + " ";
     }
     try {
-        res.cookie("token", token, COOKIE_OPTIONS);
-        res.cookie("role", tokenRole, COOKIE_OPTIONS);
-        return res    
-            .status(200)
-            .json(new ApiResponse(200, null, "User logged in successfully"));
+        await sendLoginEmail(user.email);
+        // res.cookie("token", token, COOKIE_OPTIONS);
+        // res.cookie("role", tokenRole, COOKIE_OPTIONS);
+        return res.status(200).json({
+            token,
+            role: tokenRole.trim(),
+        });        
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error.");
     }
 });
 
 const googleCallback = asyncHandler(async (req, res) => {
+    const token = req.token;
+    const tokenRole = req.tokenRole;
+    const role = tokenRole.trim();
+    const redirectUrl = `${process.env.CLIENT_URL}/landingpage?token=${token}&role=${role}`;
     return res
-        .redirect(`${process.env.CLIENT_URL}/landingPage`);
+        .redirect(redirectUrl);
+});
+
+const setCookies = asyncHandler(async (req, res) => {
+    const { token, role } = req.body;
+
+    if (!token || !role) {
+        return res.status(400).json({ message: "Missing token or role" });
+    }
+
+    try {
+        // res.cookie("token", token, COOKIE_OPTIONS);
+        // res.cookie("role", role, COOKIE_OPTIONS);
+        return res.status(200).json({ success: true });
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
 });
 
 const logout = asyncHandler(async (req, res) => {
     try {
         return res
-        .clearCookie("token")
-        .clearCookie("role")
+        // .clearCookie("token")
+        // .clearCookie("role")
         .status(200)
         .json(new ApiResponse(200, null, "User logged out successfully"));
     } catch (error) {
@@ -200,7 +229,84 @@ const toggleEmail = asyncHandler(async (req, res) => {
     }
 });
 
-export { 
+const forgotPasswordEmail = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        throw new ApiError(400, "Please provide an email address");
+    }
+    const user = await User.findOne({
+        email
+    });
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+    try {
+        const otp = generateOTP();
+        user.otp = otp;
+        await user.save();
+        await sendPasswordResetEmail(user.email, user.otp);
+        return res
+            .status(200)
+            .json(new ApiResponse(200, null, "OTP sent to your email for password reset"));
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+});
+
+const forgotPasswordVerifyOTP = asyncHandler(async (req, res) => {
+    const { email, otp } = req.body;
+    if (!email || !otp) {
+        throw new ApiError(400, "Please provide email and OTP");
+    }
+    const user = await User.findOne({
+        email
+    });
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+    if (user.otp !== otp) {
+        throw new ApiError(400, "Invalid OTP");
+    }
+    try {
+        user.canChangePassword = true;
+        await user.save();
+        return res
+            .status(200)
+            .json(new ApiResponse(200, null, "OTP verified successfully. You can now change your password"));
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+});
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+    if (!email || !password) {
+        throw new ApiError(400, "Please fill all fields");
+    }
+    const user = await User.findOne({
+        email
+    });
+    if (!user) {
+        throw new ApiError(404, "User not found");
+    }
+    if (!user.canChangePassword) {
+        throw new ApiError(403, "You cannot change your password at this time");
+    }
+    const hashedPassword = await hashPassword(password);
+    try {
+        user.password = hashedPassword;
+        user.canChangePassword = false;
+        user.otp = null;
+        await user.save();
+        return res
+            .status(200)
+            .json(new ApiResponse(200, null, "Password changed successfully"));
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+});
+
+export {
     register,
     login,
     googleCallback,
@@ -208,5 +314,9 @@ export {
     addDetails, 
     changePassword, 
     getUser,
-    toggleEmail
+    toggleEmail,
+    setCookies,
+    forgotPasswordEmail,
+    forgotPasswordVerifyOTP,
+    forgotPassword,
 };
