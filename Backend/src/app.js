@@ -54,4 +54,8 @@ app.use("/api/v1/map", mapRouter);
 import reviewRouter from "./routes/review.routes.js";
 app.use("/api/v1/review", reviewRouter);
 
+//payment routes
+import paymentRouter from "./routes/payment.routes.js";
+app.use("/api/v1/payment", paymentRouter);
+
 export default app;
