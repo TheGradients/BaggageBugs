@@ -2,6 +2,7 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
+import BankAccount from "../models/bankAccount.model.js";
 import { generateToken } from "../helper/jwt.helper.js";
 import { hashPassword, matchPassword } from "../helper/bcrypt.helper.js";
 import {
@@ -304,6 +305,58 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 });
 
+const addBankAccount = asyncHandler(async (req, res) => {
+    const { accountNumber, bankName, ifscCode, accountHolderName, holderAddress, holderPostalCode, holderCity, holderStateCode } = req.body;
+
+    if (!accountNumber || !bankName || !ifscCode || !accountHolderName || !holderAddress || !holderPostalCode || !holderCity || !holderStateCode) {
+        throw new ApiError(400, "Please fill all fields");
+    }
+
+    if (!/^[0-9]{10,12}$/.test(accountNumber)) {
+        throw new ApiError(400, "Invalid account number format");
+    }
+
+    if (!/^[A-Z]{4}0[A-Z0-9]{6}$/.test(ifscCode)) {
+        throw new ApiError(400, "Invalid IFSC code format");
+    }
+
+    if (!/^[0-9]{6}$/.test(holderPostalCode)) {
+        throw new ApiError(400, "Invalid postal code format");
+    }
+
+    if (!/^[A-Z]{2}$/.test(holderStateCode)) {
+        throw new ApiError(400, "Invalid state code format");
+    }
+
+    const existingUser = await User.findById(req.user._id);
+    if (!existingUser) {
+        throw new ApiError(404, "User not found");
+    }
+
+    if( existingUser.role[0] !== "partner"){
+        throw new ApiError(403, "You are not authorized to add a bank account");
+    }
+
+    try {
+        const bankAccount = await BankAccount.create({
+            userId: req.user._id,
+            accountNumber,
+            bankName,
+            ifscCode,
+            accountHolderName,
+            holderAddress,
+            holderPostalCode,
+            holderCity,
+            holderStateCode,
+        });
+        return res
+            .status(201)
+            .json(new ApiResponse(201, bankAccount, "Bank account added successfully"));
+    } catch (error) {
+        throw new ApiError(500, error.message || "Internal Server Error");
+    }
+});
+
 export {
     register,
     login,
@@ -317,4 +370,5 @@ export {
     forgotPasswordEmail,
     forgotPasswordVerifyOTP,
     forgotPassword,
+    addBankAccount
 };
