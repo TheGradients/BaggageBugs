@@ -12,6 +12,7 @@ const googleAuth = asyncHandler(async (req, res, next) => {
                 name: req.user?._json?.name,
                 email: req.user?._json?.email,
                 password: "xxxxxxxxxxx",
+                googleAuth: true,
             });
             savedUser = await newUser.save();
         }

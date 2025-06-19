@@ -45,6 +45,14 @@ const userSchema = new Schema({
         type: Boolean,
         default: false,
     },
+    googleAuth: {
+        type: Boolean,
+        default: false,
+    },
+    changedGooglePassword: {
+        type: Boolean,
+        default: false,
+    },
 }, { 
     timestamps: true 
 });
