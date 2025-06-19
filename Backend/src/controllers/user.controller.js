@@ -2,7 +2,6 @@ import asyncHandler from "../utils/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import User from "../models/user.model.js";
-// import { COOKIE_OPTIONS } from "../constants.js";
 import { generateToken } from "../helper/jwt.helper.js";
 import { hashPassword, matchPassword } from "../helper/bcrypt.helper.js";
 import {
@@ -53,6 +52,9 @@ const login = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(404, "User not found");
     }
+    if (user.googleAuth && !user.changedGooglePassword) {
+        throw new ApiError(403, "Please login with Google");
+    }
     const isMatch = await matchPassword(password, user.password);
     if (!isMatch) {
         throw new ApiError(401, "Invalid credentials");
@@ -67,12 +69,10 @@ const login = asyncHandler(async (req, res) => {
     }
     try {
         await sendLoginEmail(user.email);
-        // res.cookie("token", token, COOKIE_OPTIONS);
-        // res.cookie("role", tokenRole, COOKIE_OPTIONS);
         return res.status(200).json({
             token,
             role: tokenRole.trim(),
-        });        
+        });
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error.");
     }
@@ -89,14 +89,10 @@ const googleCallback = asyncHandler(async (req, res) => {
 
 const setCookies = asyncHandler(async (req, res) => {
     const { token, role } = req.body;
-
     if (!token || !role) {
         return res.status(400).json({ message: "Missing token or role" });
     }
-
     try {
-        // res.cookie("token", token, COOKIE_OPTIONS);
-        // res.cookie("role", role, COOKIE_OPTIONS);
         return res.status(200).json({ success: true });
     } catch (error) {
         throw new ApiError(500, error.message || "Internal Server Error");
@@ -106,8 +102,6 @@ const setCookies = asyncHandler(async (req, res) => {
 const logout = asyncHandler(async (req, res) => {
     try {
         return res
-        // .clearCookie("token")
-        // .clearCookie("role")
         .status(200)
         .json(new ApiResponse(200, null, "User logged out successfully"));
     } catch (error) {
@@ -174,6 +168,8 @@ const changePassword = asyncHandler(async (req, res) => {
             id,
             {
                 password: hashedPassword,
+                googleAuth: false,
+                changedGooglePassword: true,
             },
             { new: true }
         );
@@ -296,6 +292,8 @@ const forgotPassword = asyncHandler(async (req, res) => {
     try {
         user.password = hashedPassword;
         user.canChangePassword = false;
+        user.googleAuth = false;
+        user.changedGooglePassword = true;
         user.otp = null;
         await user.save();
         return res
