@@ -12,7 +12,8 @@ import {
     setCookies,
     forgotPasswordEmail,
     forgotPasswordVerifyOTP,
-    forgotPassword
+    forgotPassword,
+    addBankAccount
 } from '../controllers/user.controller.js';
 import verifyJWT from "../middlewares/auth.middleware.js";
 import googleAuth from "../middlewares/googleAuth.middleware.js"
@@ -39,5 +40,6 @@ router.route('/addDetails').post(verifyJWT, addDetails);
 router.route('/changePassword').post(verifyJWT, changePassword);
 router.route('/getUser').get(verifyJWT, getUser);
 router.route('/toggleEmail').post(verifyJWT, toggleEmail);
+router.route('/addBankAccount').post(verifyJWT, addBankAccount);
 
 export default router;
