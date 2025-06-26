@@ -49,6 +49,8 @@ const partnerLogin = asyncHandler(async (req, res) => {
     const user = await User.findOne({
         $or: [{ email }]
     });
+    user.role = ROLES[2];
+    await user.save();
     if (!user) {
         throw new ApiError(404, "User not found");
     }
