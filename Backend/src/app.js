@@ -43,7 +43,11 @@ app.use("/api/v1", healthRouter);
 import userRouter from "./routes/user.routes.js";
 app.use("/api/v1/user", userRouter);
 
-//facilty routes
+//partner routes
+import partnerRouter from "./routes/partner.routes.js";
+app.use("/api/v1/partner", partnerRouter);
+
+//facility routes
 import facilityRouter from "./routes/facility.routes.js";
 app.use("/api/v1/facility", facilityRouter);
 
