@@ -67,4 +67,8 @@ app.use("/api/v1/review", reviewRouter);
 import paymentRouter from "./routes/payment.routes.js";
 app.use("/api/v1/payment", paymentRouter);
 
+//admin routes
+import adminRouter from "./routes/admin.routes.js";
+app.use("/api/v1/admin", adminRouter);
+
 export default app;
